@@ -43,7 +43,7 @@ const MessagesList = () => {
           <span className="text-muted ms-2 small">
             {formatTime(message.createdAt)}
           </span>
-          <p className="mb-0">{message.body}</p>
+          <p className="mb-0 word-break">{message.body}</p>
         </div>
       ))}
       <div ref={messagesEndRef} />

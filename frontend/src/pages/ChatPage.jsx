@@ -11,7 +11,7 @@ import ChatArea from '../components/ChatArea'
 const ChatPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { isAuthenticated, token, username } = useSelector((state) => state.auth)
+  const { isAuthenticated } = useSelector((state) => state.auth)
   const { loading: channelsLoading } = useSelector((state) => state.channels)
   const { loading: messagesLoading } = useSelector((state) => state.messages)
 
@@ -27,13 +27,7 @@ const ChatPage = () => {
   }, [dispatch])
 
   useEffect(() => {
-    const hasToken = !!token
-    const hasUsername = !!username
-    const isAuthValid = hasToken && hasUsername && isAuthenticated
-
-    if (!isAuthValid) {
-      console.log('Auth check failed:', { hasToken, hasUsername, isAuthenticated })
-      dispatch(logout())
+    if (!isAuthenticated) {
       navigate('/login')
       return
     }
@@ -42,11 +36,23 @@ const ChatPage = () => {
     dispatch(fetchMessages())
 
     socket.on('newMessage', onNewMessage)
+    socket.on('newChannel', () => {
+      dispatch(fetchChannels())
+    })
+    socket.on('renameChannel', () => {
+      dispatch(fetchChannels())
+    })
+    socket.on('removeChannel', () => {
+      dispatch(fetchChannels())
+    })
 
     return () => {
       socket.off('newMessage', onNewMessage)
+      socket.off('newChannel')
+      socket.off('renameChannel')
+      socket.off('removeChannel')
     }
-  }, [dispatch, isAuthenticated, token, username, navigate, onNewMessage])
+  }, [dispatch, isAuthenticated, navigate, onNewMessage])
 
   const handleLogout = () => {
     dispatch(logout())
@@ -66,10 +72,10 @@ const ChatPage = () => {
   return (
     <div className="container-fluid position-relative vh-100 d-flex flex-column">
       <div className="row flex-grow-1 overflow-hidden">
-        <div className="col-4 col-md-3 p-0 h-100">
+        <div className="col-auto p-0 h-100">
           <ChannelsList />
         </div>
-        <div className="col-8 col-md-9 p-0 h-100 d-flex flex-column">
+        <div className="col p-0 h-100 d-flex flex-column">
           <ChatArea />
         </div>
       </div>
