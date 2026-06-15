@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../../services/api'
+import socket from '../../services/socket'
 
 export const fetchMessages = createAsyncThunk(
   'messages/fetchMessages',
@@ -15,9 +16,9 @@ export const fetchMessages = createAsyncThunk(
 
 export const sendMessage = createAsyncThunk(
   'messages/sendMessage',
-  async (messageData, { rejectWithValue }) => {
+  async ({ channelId, body, username }, { rejectWithValue }) => {
     try {
-      const response = await api.post('/messages', messageData)
+      const response = await api.post('/messages', { channelId, body, username })
       return response.data
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Ошибка отправки сообщения')
@@ -34,12 +35,17 @@ const messagesSlice = createSlice({
   },
   reducers: {
     addMessage: (state, action) => {
-      state.messages.push(action.payload)
+      const exists = state.messages.some(msg => msg.id === action.payload.id)
+      if (!exists) {
+        state.messages.push(action.payload)
+      }
+    },
+    clearMessages: (state) => {
+      state.messages = []
     },
   },
   extraReducers: (builder) => {
     builder
-      // fetchMessages
       .addCase(fetchMessages.pending, (state) => {
         state.loading = true
         state.error = null
@@ -52,12 +58,20 @@ const messagesSlice = createSlice({
         state.loading = false
         state.error = action.payload
       })
-      // sendMessage
+      .addCase(sendMessage.pending, (state) => {
+        state.error = null
+      })
       .addCase(sendMessage.fulfilled, (state, action) => {
-        state.messages.push(action.payload)
+        const exists = state.messages.some(msg => msg.id === action.payload.id)
+        if (!exists) {
+          state.messages.push(action.payload)
+        }
+      })
+      .addCase(sendMessage.rejected, (state, action) => {
+        state.error = action.payload
       })
   },
 })
 
-export const { addMessage } = messagesSlice.actions
+export const { addMessage, clearMessages } = messagesSlice.actions
 export default messagesSlice.reducer

@@ -7,11 +7,13 @@ const ChatArea = () => {
   const currentChannel = channels.find((ch) => ch.id === currentChannelId)
 
   return (
-    <div className="col-8 col-md-9 d-flex flex-column vh-100">
+    <div className="d-flex flex-column h-100">
       <div className="p-3 border-bottom">
-        <h5># {currentChannel?.name}</h5>
+        <h5 className="mb-0"># {currentChannel?.name || 'Выберите канал'}</h5>
       </div>
-      <MessagesList />
+      <div className="flex-grow-1 overflow-hidden d-flex flex-column">
+        <MessagesList />
+      </div>
       <MessageForm />
     </div>
   )

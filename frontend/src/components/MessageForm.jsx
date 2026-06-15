@@ -4,19 +4,30 @@ import { sendMessage } from '../store/slices/messagesSlice'
 
 const MessageForm = () => {
   const [message, setMessage] = useState('')
+  const [isSending, setIsSending] = useState(false)
   const dispatch = useDispatch()
   const { currentChannelId } = useSelector((state) => state.channels)
   const { username } = useSelector((state) => state.auth)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (message.trim()) {
-      dispatch(sendMessage({
+    const trimmedMessage = message.trim()
+    
+    if (!trimmedMessage || isSending) return
+    
+    setIsSending(true)
+    
+    try {
+      await dispatch(sendMessage({
         channelId: currentChannelId,
-        body: message,
+        body: trimmedMessage,
         username,
-      }))
+      })).unwrap()
       setMessage('')
+    } catch (error) {
+      console.error('Ошибка отправки:', error)
+    } finally {
+      setIsSending(false)
     }
   }
 
@@ -30,9 +41,14 @@ const MessageForm = () => {
             placeholder="Введите сообщение..."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            disabled={isSending}
           />
-          <button type="submit" className="btn btn-primary">
-            Отправить
+          <button 
+            type="submit" 
+            className="btn btn-primary"
+            disabled={isSending || !message.trim()}
+          >
+            {isSending ? 'Отправка...' : 'Отправить'}
           </button>
         </div>
       </form>

@@ -13,6 +13,8 @@ export const login = createAsyncThunk(
       }
       
       localStorage.setItem('token', token)
+      localStorage.setItem('username', userName)
+      
       return { token, username: userName }
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Ошибка авторизации')
@@ -22,13 +24,14 @@ export const login = createAsyncThunk(
 
 export const logout = createAsyncThunk('auth/logout', async () => {
   localStorage.removeItem('token')
+  localStorage.removeItem('username')
   return null
 })
 
 const initialState = {
   isAuthenticated: !!localStorage.getItem('token'),
   token: localStorage.getItem('token') || null,
-  username: null,
+  username: localStorage.getItem('username') || null,
   loading: false,
   error: null,
 }
