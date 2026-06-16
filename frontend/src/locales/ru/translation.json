@@ -24,7 +24,7 @@
       "usernameMax": "Максимум 20 символов",
       "usernameInvalid": "Только буквы и цифры",
       "passwordRequired": "Пароль обязателен",
-      "passwordMin": "Не менее 5 символов",
+      "passwordMin": "Не менее 6 символов",
       "confirmPasswordRequired": "Обязательное поле",
       "confirmPasswordMatch": "Пароли должны совпадать",
       "userExists": "Пользователь с таким именем уже существует",
@@ -48,6 +48,7 @@
       "submit": "Добавить",
       "submitting": "Добавление...",
       "cancel": "Отмена",
+      "success": "Канал создан",
       "errors": {
         "required": "Обязательное поле",
         "min": "От 3 до 20 символов",
@@ -64,6 +65,7 @@
       "submit": "Переименовать",
       "submitting": "Переименование...",
       "cancel": "Отмена",
+      "success": "Канал переименован",
       "errors": {
         "required": "Обязательное поле",
         "min": "От 3 до 20 символов",
@@ -79,8 +81,16 @@
       "warning": "Все сообщения канала будут удалены.",
       "submit": "Удалить",
       "submitting": "Удаление...",
-      "cancel": "Отмена"
+      "cancel": "Отмена",
+      "success": "Канал удалён"
     }
+  },
+  "toasts": {
+    "networkError": "Ошибка сети. Проверьте подключение.",
+    "loadError": "Ошибка загрузки данных",
+    "channelCreated": "Канал создан",
+    "channelRenamed": "Канал переименован",
+    "channelRemoved": "Канал удалён"
   },
   "errors": {
     "auth": {

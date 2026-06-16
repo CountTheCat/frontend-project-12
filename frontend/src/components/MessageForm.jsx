@@ -34,9 +34,9 @@ const MessageForm = () => {
   }
 
   return (
-    <div className="border-top p-3">
+    <div className="border-top p-3" style={{ backgroundColor: '#f8f9fa' }}>
       <form onSubmit={handleSubmit}>
-        <div className="input-group">
+        <div className="input-group" style={{ gap: '8px' }}>
           <input
             type="text"
             className="form-control"
@@ -44,11 +44,27 @@ const MessageForm = () => {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             disabled={isSending}
+            style={{
+              borderRadius: '8px',
+              border: '1px solid #e2e8f0',
+              padding: '10px 14px',
+              fontSize: '14px'
+            }}
           />
           <button 
             type="submit" 
             className="btn btn-primary"
             disabled={isSending || !message.trim()}
+            style={{
+              borderRadius: '8px',
+              padding: '10px 20px',
+              backgroundColor: '#4f46e5',
+              border: 'none',
+              fontWeight: 500,
+              fontSize: '14px',
+              flexShrink: 0,
+              marginLeft: '0px'
+            }}
           >
             {isSending ? t('chat.sending') : t('chat.send')}
           </button>

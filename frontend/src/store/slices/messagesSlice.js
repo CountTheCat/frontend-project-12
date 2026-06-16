@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../../services/api'
-import socket from '../../services/socket'
+import { showNetworkError, showLoadError } from '../../utils/toasts'
 
 export const fetchMessages = createAsyncThunk(
   'messages/fetchMessages',
@@ -9,6 +9,11 @@ export const fetchMessages = createAsyncThunk(
       const response = await api.get('/messages')
       return response.data
     } catch (error) {
+      if (!error.response) {
+        showNetworkError()
+      } else {
+        showLoadError()
+      }
       return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки сообщений')
     }
   }
@@ -21,6 +26,9 @@ export const sendMessage = createAsyncThunk(
       const response = await api.post('/messages', { channelId, body, username })
       return response.data
     } catch (error) {
+      if (!error.response) {
+        showNetworkError()
+      }
       return rejectWithValue(error.response?.data?.message || 'Ошибка отправки сообщения')
     }
   }
@@ -39,9 +47,6 @@ const messagesSlice = createSlice({
       if (!exists) {
         state.messages.push(action.payload)
       }
-    },
-    clearMessages: (state) => {
-      state.messages = []
     },
   },
   extraReducers: (builder) => {
@@ -73,5 +78,5 @@ const messagesSlice = createSlice({
   },
 })
 
-export const { addMessage, clearMessages } = messagesSlice.actions
+export const { addMessage } = messagesSlice.actions
 export default messagesSlice.reducer

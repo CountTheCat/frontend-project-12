@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../../services/api'
+import { showNetworkError } from '../../utils/toasts'
 
 export const signup = createAsyncThunk(
   'auth/signup',
@@ -17,6 +18,9 @@ export const signup = createAsyncThunk(
       
       return { token, username: userName }
     } catch (error) {
+      if (!error.response) {
+        showNetworkError()
+      }
       if (error.response?.status === 409) {
         return rejectWithValue('409')
       }
@@ -41,6 +45,9 @@ export const login = createAsyncThunk(
       
       return { token, username: userName }
     } catch (error) {
+      if (!error.response) {
+        showNetworkError()
+      }
       return rejectWithValue(error.response?.data?.message || 'Ошибка авторизации')
     }
   }

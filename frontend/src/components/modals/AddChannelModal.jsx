@@ -15,7 +15,7 @@ const AddChannelModal = ({ onClose }) => {
     inputRef.current?.focus()
   }, [])
 
-  const validationSchema = (channels) => Yup.object({
+  const validationSchema = Yup.object({
     name: Yup.string()
       .min(3, t('modals.addChannel.errors.min'))
       .max(20, t('modals.addChannel.errors.max'))
@@ -38,7 +38,7 @@ const AddChannelModal = ({ onClose }) => {
   }
 
   return (
-    <div className="modal show d-block" tabIndex="-1" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -47,7 +47,7 @@ const AddChannelModal = ({ onClose }) => {
           </div>
           <Formik
             initialValues={{ name: '' }}
-            validationSchema={validationSchema(channels)}
+            validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
             {({ isSubmitting, errors, handleSubmit }) => (

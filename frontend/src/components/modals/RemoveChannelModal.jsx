@@ -17,7 +17,7 @@ const RemoveChannelModal = ({ channel, onClose }) => {
   }
 
   return (
-    <div className="modal show d-block" tabIndex="-1" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">

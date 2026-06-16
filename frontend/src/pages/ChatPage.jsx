@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect, useCallback, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -15,6 +15,7 @@ const ChatPage = () => {
   const { isAuthenticated } = useSelector((state) => state.auth)
   const { loading: channelsLoading } = useSelector((state) => state.channels)
   const { loading: messagesLoading } = useSelector((state) => state.messages)
+  const hasLoaded = useRef(false)
 
   const onNewMessage = useCallback((message) => {
     const normalizedMessage = {
@@ -33,25 +34,16 @@ const ChatPage = () => {
       return
     }
     
+    if (hasLoaded.current) return
+    hasLoaded.current = true
+    
     dispatch(fetchChannels())
     dispatch(fetchMessages())
 
     socket.on('newMessage', onNewMessage)
-    socket.on('newChannel', () => {
-      dispatch(fetchChannels())
-    })
-    socket.on('renameChannel', () => {
-      dispatch(fetchChannels())
-    })
-    socket.on('removeChannel', () => {
-      dispatch(fetchChannels())
-    })
 
     return () => {
       socket.off('newMessage', onNewMessage)
-      socket.off('newChannel')
-      socket.off('renameChannel')
-      socket.off('removeChannel')
     }
   }, [dispatch, isAuthenticated, navigate, onNewMessage])
 

@@ -15,14 +15,14 @@ const RenameChannelModal = ({ channel, onClose }) => {
     inputRef.current?.focus()
   }, [])
 
-  const validationSchema = (channels, currentId) => Yup.object({
+  const validationSchema = Yup.object({
     name: Yup.string()
       .min(3, t('modals.renameChannel.errors.min'))
       .max(20, t('modals.renameChannel.errors.max'))
       .matches(/^[a-zA-Zа-яА-Я0-9]+$/, t('modals.renameChannel.errors.invalid'))
       .required(t('modals.renameChannel.errors.required'))
       .test('unique', t('modals.renameChannel.errors.unique'), function(value) {
-        return !channels.some(ch => ch.name === value && ch.id !== currentId)
+        return !channels.some(ch => ch.name === value && ch.id !== channel.id)
       })
   })
 
@@ -38,7 +38,7 @@ const RenameChannelModal = ({ channel, onClose }) => {
   }
 
   return (
-    <div className="modal show d-block" tabIndex="-1" onClick={(e) => e.target === e.currentTarget && onClose()}>
+    <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
       <div className="modal-dialog">
         <div className="modal-content">
           <div className="modal-header">
@@ -47,7 +47,7 @@ const RenameChannelModal = ({ channel, onClose }) => {
           </div>
           <Formik
             initialValues={{ name: channel.name }}
-            validationSchema={validationSchema(channels, channel.id)}
+            validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
             {({ isSubmitting, errors, handleSubmit }) => (
