@@ -1,7 +1,6 @@
 import { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { logout } from '../store/slices/authSlice'
 import { fetchChannels } from '../store/slices/channelsSlice'
 import { fetchMessages, addMessage } from '../store/slices/messagesSlice'
 import socket from '../services/socket'
@@ -54,14 +53,9 @@ const ChatPage = () => {
     }
   }, [dispatch, isAuthenticated, navigate, onNewMessage])
 
-  const handleLogout = () => {
-    dispatch(logout())
-    navigate('/login')
-  }
-
   if (channelsLoading || messagesLoading) {
     return (
-      <div className="d-flex justify-content-center align-items-center vh-100">
+      <div className="d-flex justify-content-center align-items-center h-100">
         <div className="spinner-border" role="status">
           <span className="visually-hidden">Loading...</span>
         </div>
@@ -70,7 +64,7 @@ const ChatPage = () => {
   }
 
   return (
-    <div className="container-fluid position-relative vh-100 d-flex flex-column">
+    <div className="container-fluid h-100 d-flex flex-column">
       <div className="row flex-grow-1 overflow-hidden">
         <div className="col-auto p-0 h-100">
           <ChannelsList />
@@ -79,13 +73,6 @@ const ChatPage = () => {
           <ChatArea />
         </div>
       </div>
-      <button
-        onClick={handleLogout}
-        className="btn btn-outline-danger position-absolute bottom-0 start-0 m-3"
-        style={{ zIndex: 1000 }}
-      >
-        Выйти
-      </button>
     </div>
   )
 }

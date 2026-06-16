@@ -1,6 +1,30 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import api from '../../services/api'
 
+export const signup = createAsyncThunk(
+  'auth/signup',
+  async ({ username, password }, { rejectWithValue }) => {
+    try {
+      const response = await api.post('/signup', { username, password })
+      const { token, username: userName } = response.data
+      
+      if (!token) {
+        throw new Error('Сервер не вернул токен')
+      }
+      
+      localStorage.setItem('token', token)
+      localStorage.setItem('username', userName)
+      
+      return { token, username: userName }
+    } catch (error) {
+      if (error.response?.status === 409) {
+        return rejectWithValue('409')
+      }
+      return rejectWithValue(error.response?.data?.message || 'Ошибка регистрации')
+    }
+  }
+)
+
 export const login = createAsyncThunk(
   'auth/login',
   async ({ username, password }, { rejectWithValue }) => {
@@ -46,6 +70,22 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(signup.pending, (state) => {
+        state.loading = true
+        state.error = null
+      })
+      .addCase(signup.fulfilled, (state, action) => {
+        state.loading = false
+        state.isAuthenticated = true
+        state.token = action.payload.token
+        state.username = action.payload.username
+        state.error = null
+      })
+      .addCase(signup.rejected, (state, action) => {
+        state.loading = false
+        state.isAuthenticated = false
+        state.error = action.payload
+      })
       .addCase(login.pending, (state) => {
         state.loading = true
         state.error = null

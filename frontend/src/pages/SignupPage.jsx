@@ -1,31 +1,24 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Link } from 'react-router-dom'
-import { login, clearError } from '../store/slices/authSlice'
+import { signup } from '../store/slices/authSlice'
 
-const validate = (values) => {
-  const errors = {}
-  const trimmedUsername = values.username?.trim() || ''
-  const trimmedPassword = values.password?.trim() || ''
-  
-  if (!trimmedUsername) {
-    errors.username = 'Имя пользователя обязательно'
-  } else if (trimmedUsername.length < 3) {
-    errors.username = 'Минимум 3 символа'
-  } else if (trimmedUsername.length > 20) {
-    errors.username = 'Максимум 20 символов'
-  }
-  
-  if (!trimmedPassword) {
-    errors.password = 'Пароль обязателен'
-  } else if (trimmedPassword.length < 5) {
-    errors.password = 'Минимум 5 символов'
-  }
-  
-  return errors
-}
+const validationSchema = Yup.object({
+  username: Yup.string()
+    .min(3, 'От 3 до 20 символов')
+    .max(20, 'От 3 до 20 символов')
+    .matches(/^[a-zA-Zа-яА-Я0-9]+$/, 'Только буквы и цифры')
+    .required('Обязательное поле'),
+  password: Yup.string()
+    .min(6, 'Не менее 6 символов')
+    .required('Обязательное поле'),
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], 'Пароли должны совпадать')
+    .required('Обязательное поле'),
+})
 
-const LoginPage = () => {
+const SignupPage = () => {
   const dispatch = useDispatch()
   const { isAuthenticated, loading, error } = useSelector((state) => state.auth)
 
@@ -33,11 +26,28 @@ const LoginPage = () => {
     return <Navigate to="/" />
   }
 
+  const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+    try {
+      await dispatch(signup({
+        username: values.username,
+        password: values.password,
+      })).unwrap()
+    } catch (err) {
+      if (err === '409') {
+        setFieldError('username', 'Пользователь с таким именем уже существует')
+      } else {
+        setFieldError('general', err || 'Ошибка регистрации')
+      }
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-4">
-          <h2 className="text-center mb-4">Вход в чат</h2>
+          <h2 className="text-center mb-4">Регистрация</h2>
           
           {error && (
             <div className="alert alert-danger" role="alert">
@@ -46,24 +56,9 @@ const LoginPage = () => {
           )}
           
           <Formik
-            initialValues={{ username: '', password: '' }}
-            validate={validate}
-            onSubmit={async (values, { setSubmitting, setFieldError }) => {
-              dispatch(clearError())
-              
-              const trimmedValues = {
-                username: values.username.trim(),
-                password: values.password.trim()
-              }
-              
-              try {
-                await dispatch(login(trimmedValues)).unwrap()
-              } catch (err) {
-                setFieldError('general', err)
-              } finally {
-                setSubmitting(false)
-              }
-            }}
+            initialValues={{ username: '', password: '', confirmPassword: '' }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
           >
             {({ isSubmitting, errors, touched }) => (
               <Form>
@@ -88,11 +83,25 @@ const LoginPage = () => {
                   <Field
                     type="password"
                     name="password"
-                    autoComplete="current-password"
+                    autoComplete="new-password"
                     className={`form-control ${touched.password && errors.password ? 'is-invalid' : ''}`}
                     placeholder="Введите пароль"
                   />
                   <ErrorMessage name="password" component="div" className="invalid-feedback" />
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="confirmPassword" className="form-label">
+                    Подтверждение пароля
+                  </label>
+                  <Field
+                    type="password"
+                    name="confirmPassword"
+                    autoComplete="new-password"
+                    className={`form-control ${touched.confirmPassword && errors.confirmPassword ? 'is-invalid' : ''}`}
+                    placeholder="Подтвердите пароль"
+                  />
+                  <ErrorMessage name="confirmPassword" component="div" className="invalid-feedback" />
                 </div>
 
                 {errors.general && (
@@ -104,23 +113,19 @@ const LoginPage = () => {
                   className="btn btn-primary w-100" 
                   disabled={isSubmitting || loading}
                 >
-                  {isSubmitting || loading ? 'Вход...' : 'Войти'}
+                  {isSubmitting || loading ? 'Регистрация...' : 'Зарегистрироваться'}
                 </button>
 
                 <div className="mt-3 text-center">
-                  <Link to="/signup">Нет аккаунта? Зарегистрироваться</Link>
+                  <Link to="/login">Уже есть аккаунт? Войти</Link>
                 </div>
               </Form>
             )}
           </Formik>
-          
-          <div className="mt-3 text-center text-muted">
-            <small>Тестовый пользователь: admin / admin</small>
-          </div>
         </div>
       </div>
     </div>
   )
 }
 
-export default LoginPage
+export default SignupPage
