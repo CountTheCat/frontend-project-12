@@ -1,7 +1,9 @@
 import { useSelector } from 'react-redux'
 import { useEffect, useRef } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const MessagesList = () => {
+  const { t } = useTranslation()
   const { messages } = useSelector((state) => state.messages)
   const { currentChannelId } = useSelector((state) => state.channels)
   const messagesEndRef = useRef(null)
@@ -29,7 +31,7 @@ const MessagesList = () => {
     return (
       <div className="flex-grow-1 overflow-auto p-3">
         <div className="text-center text-muted mt-5">
-          Нет сообщений. Напишите первое!
+          {t('chat.noMessages')}
         </div>
       </div>
     )

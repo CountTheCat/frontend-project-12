@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import { sendMessage } from '../store/slices/messagesSlice'
 
 const MessageForm = () => {
   const [message, setMessage] = useState('')
   const [isSending, setIsSending] = useState(false)
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const { currentChannelId } = useSelector((state) => state.channels)
   const { username } = useSelector((state) => state.auth)
 
@@ -38,7 +40,7 @@ const MessageForm = () => {
           <input
             type="text"
             className="form-control"
-            placeholder="Введите сообщение..."
+            placeholder={t('chat.messagePlaceholder')}
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             disabled={isSending}
@@ -48,7 +50,7 @@ const MessageForm = () => {
             className="btn btn-primary"
             disabled={isSending || !message.trim()}
           >
-            {isSending ? 'Отправка...' : 'Отправить'}
+            {isSending ? t('chat.sending') : t('chat.send')}
           </button>
         </div>
       </form>

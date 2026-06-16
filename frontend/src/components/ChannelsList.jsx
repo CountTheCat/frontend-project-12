@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { useTranslation } from 'react-i18next'
 import { setCurrentChannel } from '../store/slices/channelsSlice'
 import AddChannelModal from './modals/AddChannelModal'
 import RenameChannelModal from './modals/RenameChannelModal'
@@ -7,6 +8,7 @@ import RemoveChannelModal from './modals/RemoveChannelModal'
 
 const ChannelsList = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const { channels, currentChannelId } = useSelector((state) => state.channels)
   const [showAddModal, setShowAddModal] = useState(false)
   const [showRenameModal, setShowRenameModal] = useState(false)
@@ -36,9 +38,9 @@ const ChannelsList = () => {
 
   return (
     <>
-      <div className="channels-sidebar border-end vh-100 d-flex flex-column" style={{ width: '260px', minWidth: '200px' }}>
+      <div className="channels-sidebar border-end vh-100 d-flex flex-column">
         <div className="p-3 border-bottom d-flex justify-content-between align-items-center">
-          <h5 className="mb-0">Каналы</h5>
+          <h5 className="mb-0">{t('chat.channels')}</h5>
           <button
             className="btn btn-sm btn-primary"
             onClick={() => setShowAddModal(true)}
@@ -73,13 +75,13 @@ const ChannelsList = () => {
                           className="dropdown-item"
                           onClick={() => handleRename(channel)}
                         >
-                          Переименовать
+                          {t('modals.renameChannel.title')}
                         </button>
                         <button
                           className="dropdown-item text-danger"
                           onClick={() => handleRemove(channel)}
                         >
-                          Удалить
+                          {t('modals.removeChannel.title')}
                         </button>
                       </div>
                     )}

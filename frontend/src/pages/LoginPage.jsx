@@ -1,43 +1,45 @@
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { login, clearError } from '../store/slices/authSlice'
-
-const validate = (values) => {
-  const errors = {}
-  const trimmedUsername = values.username?.trim() || ''
-  const trimmedPassword = values.password?.trim() || ''
-  
-  if (!trimmedUsername) {
-    errors.username = 'Имя пользователя обязательно'
-  } else if (trimmedUsername.length < 3) {
-    errors.username = 'Минимум 3 символа'
-  } else if (trimmedUsername.length > 20) {
-    errors.username = 'Максимум 20 символов'
-  }
-  
-  if (!trimmedPassword) {
-    errors.password = 'Пароль обязателен'
-  } else if (trimmedPassword.length < 5) {
-    errors.password = 'Минимум 5 символов'
-  }
-  
-  return errors
-}
 
 const LoginPage = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const { isAuthenticated, loading, error } = useSelector((state) => state.auth)
 
   if (isAuthenticated) {
     return <Navigate to="/" />
   }
 
+  const validate = (values) => {
+    const errors = {}
+    const trimmedUsername = values.username?.trim() || ''
+    const trimmedPassword = values.password?.trim() || ''
+    
+    if (!trimmedUsername) {
+      errors.username = t('signup.errors.usernameRequired')
+    } else if (trimmedUsername.length < 3) {
+      errors.username = t('signup.errors.usernameMin')
+    } else if (trimmedUsername.length > 20) {
+      errors.username = t('signup.errors.usernameMax')
+    }
+    
+    if (!trimmedPassword) {
+      errors.password = t('signup.errors.passwordRequired')
+    } else if (trimmedPassword.length < 5) {
+      errors.password = t('signup.errors.passwordMin')
+    }
+    
+    return errors
+  }
+
   return (
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-4">
-          <h2 className="text-center mb-4">Вход в чат</h2>
+          <h2 className="text-center mb-4">{t('login.title')}</h2>
           
           {error && (
             <div className="alert alert-danger" role="alert">
@@ -69,28 +71,28 @@ const LoginPage = () => {
               <Form>
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">
-                    Имя пользователя
+                    {t('login.username')}
                   </label>
                   <Field
                     type="text"
                     name="username"
                     autoComplete="username"
                     className={`form-control ${touched.username && errors.username ? 'is-invalid' : ''}`}
-                    placeholder="Введите имя пользователя"
+                    placeholder={t('login.username')}
                   />
                   <ErrorMessage name="username" component="div" className="invalid-feedback" />
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">
-                    Пароль
+                    {t('login.password')}
                   </label>
                   <Field
                     type="password"
                     name="password"
                     autoComplete="current-password"
                     className={`form-control ${touched.password && errors.password ? 'is-invalid' : ''}`}
-                    placeholder="Введите пароль"
+                    placeholder={t('login.password')}
                   />
                   <ErrorMessage name="password" component="div" className="invalid-feedback" />
                 </div>
@@ -104,18 +106,18 @@ const LoginPage = () => {
                   className="btn btn-primary w-100" 
                   disabled={isSubmitting || loading}
                 >
-                  {isSubmitting || loading ? 'Вход...' : 'Войти'}
+                  {isSubmitting || loading ? t('chat.sending') : t('login.submit')}
                 </button>
 
                 <div className="mt-3 text-center">
-                  <Link to="/signup">Нет аккаунта? Зарегистрироваться</Link>
+                  <Link to="/signup">{t('login.signupLink')}</Link>
                 </div>
               </Form>
             )}
           </Formik>
           
           <div className="mt-3 text-center text-muted">
-            <small>Тестовый пользователь: admin / admin</small>
+            <small>{t('login.testUser')}</small>
           </div>
         </div>
       </div>

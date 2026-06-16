@@ -2,29 +2,31 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { signup } from '../store/slices/authSlice'
-
-const validationSchema = Yup.object({
-  username: Yup.string()
-    .min(3, 'От 3 до 20 символов')
-    .max(20, 'От 3 до 20 символов')
-    .matches(/^[a-zA-Zа-яА-Я0-9]+$/, 'Только буквы и цифры')
-    .required('Обязательное поле'),
-  password: Yup.string()
-    .min(6, 'Не менее 6 символов')
-    .required('Обязательное поле'),
-  confirmPassword: Yup.string()
-    .oneOf([Yup.ref('password')], 'Пароли должны совпадать')
-    .required('Обязательное поле'),
-})
 
 const SignupPage = () => {
   const dispatch = useDispatch()
+  const { t } = useTranslation()
   const { isAuthenticated, loading, error } = useSelector((state) => state.auth)
 
   if (isAuthenticated) {
     return <Navigate to="/" />
   }
+
+  const validationSchema = Yup.object({
+    username: Yup.string()
+      .min(3, t('signup.errors.usernameMin'))
+      .max(20, t('signup.errors.usernameMax'))
+      .matches(/^[a-zA-Zа-яА-Я0-9]+$/, t('signup.errors.usernameInvalid'))
+      .required(t('signup.errors.usernameRequired')),
+    password: Yup.string()
+      .min(6, t('signup.errors.passwordMin'))
+      .required(t('signup.errors.passwordRequired')),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password')], t('signup.errors.confirmPasswordMatch'))
+      .required(t('signup.errors.confirmPasswordRequired')),
+  })
 
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
@@ -34,9 +36,9 @@ const SignupPage = () => {
       })).unwrap()
     } catch (err) {
       if (err === '409') {
-        setFieldError('username', 'Пользователь с таким именем уже существует')
+        setFieldError('username', t('signup.errors.userExists'))
       } else {
-        setFieldError('general', err || 'Ошибка регистрации')
+        setFieldError('general', err || t('signup.errors.registrationError'))
       }
     } finally {
       setSubmitting(false)
@@ -47,7 +49,7 @@ const SignupPage = () => {
     <div className="container mt-5">
       <div className="row justify-content-center">
         <div className="col-md-4">
-          <h2 className="text-center mb-4">Регистрация</h2>
+          <h2 className="text-center mb-4">{t('signup.title')}</h2>
           
           {error && (
             <div className="alert alert-danger" role="alert">
@@ -64,42 +66,42 @@ const SignupPage = () => {
               <Form>
                 <div className="mb-3">
                   <label htmlFor="username" className="form-label">
-                    Имя пользователя
+                    {t('signup.username')}
                   </label>
                   <Field
                     type="text"
                     name="username"
                     autoComplete="username"
                     className={`form-control ${touched.username && errors.username ? 'is-invalid' : ''}`}
-                    placeholder="Введите имя пользователя"
+                    placeholder={t('signup.username')}
                   />
                   <ErrorMessage name="username" component="div" className="invalid-feedback" />
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">
-                    Пароль
+                    {t('signup.password')}
                   </label>
                   <Field
                     type="password"
                     name="password"
                     autoComplete="new-password"
                     className={`form-control ${touched.password && errors.password ? 'is-invalid' : ''}`}
-                    placeholder="Введите пароль"
+                    placeholder={t('signup.password')}
                   />
                   <ErrorMessage name="password" component="div" className="invalid-feedback" />
                 </div>
 
                 <div className="mb-3">
                   <label htmlFor="confirmPassword" className="form-label">
-                    Подтверждение пароля
+                    {t('signup.confirmPassword')}
                   </label>
                   <Field
                     type="password"
                     name="confirmPassword"
                     autoComplete="new-password"
                     className={`form-control ${touched.confirmPassword && errors.confirmPassword ? 'is-invalid' : ''}`}
-                    placeholder="Подтвердите пароль"
+                    placeholder={t('signup.confirmPassword')}
                   />
                   <ErrorMessage name="confirmPassword" component="div" className="invalid-feedback" />
                 </div>
@@ -113,11 +115,11 @@ const SignupPage = () => {
                   className="btn btn-primary w-100" 
                   disabled={isSubmitting || loading}
                 >
-                  {isSubmitting || loading ? 'Регистрация...' : 'Зарегистрироваться'}
+                  {isSubmitting || loading ? t('chat.sending') : t('signup.submit')}
                 </button>
 
                 <div className="mt-3 text-center">
-                  <Link to="/login">Уже есть аккаунт? Войти</Link>
+                  <Link to="/login">{t('signup.loginLink')}</Link>
                 </div>
               </Form>
             )}

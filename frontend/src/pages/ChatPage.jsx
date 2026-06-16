@@ -1,6 +1,7 @@
 import { useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
 import { fetchChannels } from '../store/slices/channelsSlice'
 import { fetchMessages, addMessage } from '../store/slices/messagesSlice'
 import socket from '../services/socket'
@@ -10,6 +11,7 @@ import ChatArea from '../components/ChatArea'
 const ChatPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const { t } = useTranslation()
   const { isAuthenticated } = useSelector((state) => state.auth)
   const { loading: channelsLoading } = useSelector((state) => state.channels)
   const { loading: messagesLoading } = useSelector((state) => state.messages)
@@ -57,7 +59,7 @@ const ChatPage = () => {
     return (
       <div className="d-flex justify-content-center align-items-center h-100">
         <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
+          <span className="visually-hidden">{t('chat.loading')}</span>
         </div>
       </div>
     )
