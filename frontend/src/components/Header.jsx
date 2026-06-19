@@ -15,13 +15,13 @@ const Header = () => {
   }
 
   return (
-    <nav className="navbar navbar-light bg-light px-3 border-bottom flex-shrink-0">
-      <div className="container-fluid">
+    <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white" style={{ marginTop: 0 }}>
+      <div className="container">
         <Link to="/" className="navbar-brand">
           {t('header.brand')}
         </Link>
         {isAuthenticated && (
-          <button className="btn btn-secondary btn-sm" onClick={handleLogout}>
+          <button className="btn btn-primary" onClick={handleLogout}>
             {t('header.logout')}
           </button>
         )}

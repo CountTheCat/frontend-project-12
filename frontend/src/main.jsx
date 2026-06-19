@@ -20,17 +20,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ReduxProvider store={store}>
       <RollbarProvider config={rollbarConfig}>
-        <ErrorBoundary
-          fallbackUI={({ error, resetError }) => (
-            <div style={{ padding: '40px', textAlign: 'center' }}>
-              <h2>Что-то пошло не так</h2>
-              <p>Мы уже работаем над исправлением.</p>
-              <button onClick={resetError} className="btn btn-primary">
-                Попробовать снова
-              </button>
-            </div>
-          )}
-        >
+        <ErrorBoundary fallbackUI={({ error, resetError }) => (
+          <div style={{ padding: '40px', textAlign: 'center' }}>
+            <h2>Что-то пошло не так</h2>
+            <p>Мы уже работаем над исправлением.</p>
+            <button onClick={resetError} className="btn btn-primary">
+              Попробовать снова
+            </button>
+          </div>
+        )}>
           <App />
         </ErrorBoundary>
       </RollbarProvider>

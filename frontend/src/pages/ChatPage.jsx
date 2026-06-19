@@ -58,12 +58,12 @@ const ChatPage = () => {
   }
 
   return (
-    <div className="container-fluid h-100 d-flex flex-column">
-      <div className="row flex-grow-1 overflow-hidden">
-        <div className="col-auto p-0 h-100">
+    <div className="container h-100">
+      <div className="row h-100 overflow-hidden" style={{ marginTop: '8px' }}>
+        <div className="col-4 col-md-3 col-lg-2 p-0 bg-light border-end h-100">
           <ChannelsList />
         </div>
-        <div className="col p-0 h-100 d-flex flex-column">
+        <div className="col p-0 h-100">
           <ChatArea />
         </div>
       </div>

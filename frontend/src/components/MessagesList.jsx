@@ -29,7 +29,7 @@ const MessagesList = () => {
 
   if (channelMessages.length === 0) {
     return (
-      <div className="flex-grow-1 overflow-auto p-3">
+      <div className="flex-grow-1 overflow-auto px-4 py-3">
         <div className="text-center text-muted mt-5">
           {t('chat.noMessages')}
         </div>
@@ -38,14 +38,14 @@ const MessagesList = () => {
   }
 
   return (
-    <div className="flex-grow-1 overflow-auto p-3">
+    <div className="flex-grow-1 overflow-auto px-4 py-3">
       {channelMessages.map((message) => (
-        <div key={message.id} className="mb-2">
-          <strong>{message.username}</strong>
-          <span className="text-muted ms-2 small">
+        <div key={message.id} className="mb-1" style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
+          <strong style={{ fontSize: '14px', color: '#212529' }}>{message.username}:</strong>
+          <span style={{ fontSize: '14px', color: '#212529' }}>{message.body}</span>
+          <span className="text-muted" style={{ fontSize: '11px', marginLeft: 'auto' }}>
             {formatTime(message.createdAt)}
           </span>
-          <p className="mb-0 word-break">{message.body}</p>
         </div>
       ))}
       <div ref={messagesEndRef} />
