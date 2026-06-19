@@ -3,7 +3,6 @@ import { io } from 'socket.io-client'
 const getToken = () => localStorage.getItem('token')
 
 const socket = io('/', {
-  path: '/api/v1/ws',
   transports: ['websocket', 'polling'],
   reconnection: true,
   reconnectionAttempts: 5,
