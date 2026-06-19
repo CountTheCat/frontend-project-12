@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { sendMessage } from '../store/slices/messagesSlice'
+import { filterText } from '../utils/filter'
 
 const MessageForm = () => {
   const [message, setMessage] = useState('')
@@ -20,9 +21,10 @@ const MessageForm = () => {
     setIsSending(true)
     
     try {
+      const filteredMessage = filterText(trimmedMessage)
       await dispatch(sendMessage({
         channelId: currentChannelId,
-        body: trimmedMessage,
+        body: filteredMessage,
         username,
       })).unwrap()
       setMessage('')

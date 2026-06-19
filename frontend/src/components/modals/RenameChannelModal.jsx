@@ -4,6 +4,7 @@ import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { renameChannel } from '../../store/slices/channelsSlice'
+import { filterText } from '../../utils/filter'
 
 const RenameChannelModal = ({ channel, onClose }) => {
   const dispatch = useDispatch()
@@ -24,11 +25,16 @@ const RenameChannelModal = ({ channel, onClose }) => {
       .test('unique', t('modals.renameChannel.errors.unique'), function(value) {
         return !channels.some(ch => ch.name === value && ch.id !== channel.id)
       })
+      .test('profanity', 'Название содержит недопустимые слова', function(value) {
+        const filtered = filterText(value)
+        return filtered === value
+      })
   })
 
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
     try {
-      await dispatch(renameChannel({ id: channel.id, name: values.name })).unwrap()
+      const filteredName = filterText(values.name)
+      await dispatch(renameChannel({ id: channel.id, name: filteredName })).unwrap()
       onClose()
     } catch (error) {
       setFieldError('name', t('modals.renameChannel.errors.renameError'))

@@ -201,12 +201,170 @@ code {
 
 .channels-sidebar {
   width: 260px;
-  min-width: 200px;
+  min-width: 260px;
+  max-width: 260px;
+  flex-shrink: 0;
+  height: 100vh;
+  background-color: #f8f9fa;
+  position: relative;
 }
 
 @media (max-width: 768px) {
   .channels-sidebar {
     width: 200px;
-    min-width: 150px;
+    min-width: 200px;
+    max-width: 200px;
   }
+}
+
+.channels-header {
+  background-color: #ffffff;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  width: 100%;
+  height: 60px;
+  padding: 16px;
+  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.channels-header h5 {
+  font-weight: 600;
+  color: #2d3748;
+  margin: 0;
+}
+
+.channels-add-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: 50%;
+  background-color: #4f46e5;
+  color: #fff;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.channels-add-btn:hover {
+  background-color: #4338ca;
+  transform: scale(1.05);
+}
+
+.channels-list {
+  padding-top: 80px !important;
+  padding-bottom: 4px !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  flex: 1 1 0%;
+  margin-top: 0 !important;
+  overflow: auto;
+}
+
+.channel-item {
+  padding: 0 8px;
+  background-color: transparent;
+}
+
+.channel-btn {
+  flex: 1;
+  text-align: left;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  transition: all 0.15s ease;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: #4a5568;
+  font-weight: 400;
+  width: 100%;
+}
+
+.channel-btn:hover:not(.active) {
+  background-color: #edf2f7;
+}
+
+.channel-btn.active {
+  background-color: #4f46e5;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.channel-hash {
+  color: #a0aec0;
+  font-weight: 300;
+}
+
+.channel-btn.active .channel-hash {
+  color: #ffffff;
+}
+
+.channel-menu-btn {
+  padding: 4px 8px;
+  border: none;
+  background: transparent;
+  color: #a0aec0;
+  font-size: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.channel-menu-btn:hover {
+  color: #4a5568;
+  background-color: #edf2f7;
+}
+
+.channel-dropdown {
+  position: absolute;
+  right: 0;
+  left: auto;
+  top: 100%;
+  margin-top: 4px;
+  background-color: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  min-width: 140px;
+  padding: 4px 0;
+  z-index: 1000;
+}
+
+.dropdown-item-custom {
+  display: block;
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  font-size: 13px;
+  color: #2d3748;
+  transition: all 0.1s ease;
+  cursor: pointer;
+}
+
+.dropdown-item-custom:hover {
+  background-color: #f7fafc;
+}
+
+.dropdown-item-custom.danger {
+  color: #e53e3e;
+}
+
+.dropdown-item-custom.danger:hover {
+  background-color: #fff5f5;
 }
