@@ -8,16 +8,17 @@ export const signup = createAsyncThunk(
     try {
       const response = await api.post('/signup', { username, password })
       const { token, username: userName } = response.data
-      
+
       if (!token) {
         throw new Error('Сервер не вернул токен')
       }
-      
+
       localStorage.setItem('token', token)
       localStorage.setItem('username', userName)
-      
+
       return { token, username: userName }
-    } catch (error) {
+    }
+    catch (error) {
       if (!error.response) {
         showNetworkError()
       }
@@ -26,7 +27,7 @@ export const signup = createAsyncThunk(
       }
       return rejectWithValue(error.response?.data?.message || 'Ошибка регистрации')
     }
-  }
+  },
 )
 
 export const login = createAsyncThunk(
@@ -35,22 +36,23 @@ export const login = createAsyncThunk(
     try {
       const response = await api.post('/login', { username, password })
       const { token, username: userName } = response.data
-      
+
       if (!token) {
         throw new Error('Сервер не вернул токен')
       }
-      
+
       localStorage.setItem('token', token)
       localStorage.setItem('username', userName)
-      
+
       return { token, username: userName }
-    } catch (error) {
+    }
+    catch (error) {
       if (!error.response) {
         showNetworkError()
       }
       return rejectWithValue(error.response?.data?.message || 'Ошибка авторизации')
     }
-  }
+  },
 )
 
 export const logout = createAsyncThunk('auth/logout', async () => {

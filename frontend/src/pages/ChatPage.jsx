@@ -12,9 +12,9 @@ const ChatPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isAuthenticated } = useSelector((state) => state.auth)
-  const { loading: channelsLoading } = useSelector((state) => state.channels)
-  const { loading: messagesLoading } = useSelector((state) => state.messages)
+  const { isAuthenticated } = useSelector(state => state.auth)
+  const { loading: channelsLoading } = useSelector(state => state.channels)
+  const { loading: messagesLoading } = useSelector(state => state.messages)
   const hasLoaded = useRef(false)
 
   const onNewMessage = useCallback((message) => {
@@ -23,7 +23,7 @@ const ChatPage = () => {
       channelId: message.channelId,
       body: message.body,
       username: message.username || message.user?.username || 'Аноним',
-      createdAt: message.createdAt || new Date().toISOString()
+      createdAt: message.createdAt || new Date().toISOString(),
     }
     dispatch(addMessage(normalizedMessage))
   }, [dispatch])
@@ -33,10 +33,10 @@ const ChatPage = () => {
       navigate('/login')
       return
     }
-    
+
     if (hasLoaded.current) return
     hasLoaded.current = true
-    
+
     dispatch(fetchChannels())
     dispatch(fetchMessages())
 

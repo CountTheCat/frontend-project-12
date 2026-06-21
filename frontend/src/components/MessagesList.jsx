@@ -4,12 +4,12 @@ import { useTranslation } from 'react-i18next'
 
 const MessagesList = () => {
   const { t } = useTranslation()
-  const { messages } = useSelector((state) => state.messages)
-  const { currentChannelId } = useSelector((state) => state.channels)
+  const { messages } = useSelector(state => state.messages)
+  const { currentChannelId } = useSelector(state => state.channels)
   const messagesEndRef = useRef(null)
 
   const channelMessages = messages.filter(
-    (message) => message.channelId === currentChannelId
+    message => message.channelId === currentChannelId,
   )
 
   useEffect(() => {
@@ -22,7 +22,8 @@ const MessagesList = () => {
       const date = new Date(dateString)
       if (isNaN(date.getTime())) return ''
       return date.toLocaleTimeString()
-    } catch {
+    }
+    catch {
       return ''
     }
   }
@@ -39,9 +40,12 @@ const MessagesList = () => {
 
   return (
     <div className="flex-grow-1 overflow-auto px-4 py-3">
-      {channelMessages.map((message) => (
+      {channelMessages.map(message => (
         <div key={message.id} className="mb-1" style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-          <strong style={{ fontSize: '14px', color: '#212529' }}>{message.username}:</strong>
+          <strong style={{ fontSize: '14px', color: '#212529' }}>
+            {message.username}
+            :
+          </strong>
           <span style={{ fontSize: '14px', color: '#212529' }}>{message.body}</span>
           <span className="text-muted" style={{ fontSize: '11px', marginLeft: 'auto' }}>
             {formatTime(message.createdAt)}

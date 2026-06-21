@@ -9,7 +9,7 @@ import { filterText } from '../../utils/filter'
 const RenameChannelModal = ({ channel, onClose }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { channels, loading } = useSelector((state) => state.channels)
+  const { channels, loading } = useSelector(state => state.channels)
   const inputRef = useRef(null)
 
   useEffect(() => {
@@ -22,13 +22,13 @@ const RenameChannelModal = ({ channel, onClose }) => {
       .max(20, t('modals.renameChannel.errors.max'))
       .matches(/^[a-zA-Zа-яА-Я0-9]+$/, t('modals.renameChannel.errors.invalid'))
       .required(t('modals.renameChannel.errors.required'))
-      .test('unique', t('modals.renameChannel.errors.unique'), function(value) {
+      .test('unique', t('modals.renameChannel.errors.unique'), function (value) {
         return !channels.some(ch => ch.name === value && ch.id !== channel.id)
       })
-      .test('profanity', 'Название содержит недопустимые слова', function(value) {
+      .test('profanity', 'Название содержит недопустимые слова', function (value) {
         const filtered = filterText(value)
         return filtered === value
-      })
+      }),
   })
 
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
@@ -36,9 +36,11 @@ const RenameChannelModal = ({ channel, onClose }) => {
       const filteredName = filterText(values.name)
       await dispatch(renameChannel({ id: channel.id, name: filteredName })).unwrap()
       onClose()
-    } catch (error) {
+    }
+    catch {
       setFieldError('name', t('modals.renameChannel.errors.renameError'))
-    } finally {
+    }
+    finally {
       setSubmitting(false)
     }
   }
@@ -77,9 +79,9 @@ const RenameChannelModal = ({ channel, onClose }) => {
                   <button type="button" className="btn btn-secondary" onClick={onClose}>
                     {t('modals.renameChannel.cancel')}
                   </button>
-                  <button 
-                    type="submit" 
-                    className="btn btn-primary" 
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
                     disabled={isSubmitting || loading}
                   >
                     {isSubmitting || loading ? t('modals.renameChannel.submitting') : t('modals.renameChannel.submit')}

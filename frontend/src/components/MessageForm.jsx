@@ -9,17 +9,17 @@ const MessageForm = () => {
   const [isSending, setIsSending] = useState(false)
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { currentChannelId } = useSelector((state) => state.channels)
-  const { username } = useSelector((state) => state.auth)
+  const { currentChannelId } = useSelector(state => state.channels)
+  const { username } = useSelector(state => state.auth)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     const trimmedMessage = message.trim()
-    
+
     if (!trimmedMessage || isSending) return
-    
+
     setIsSending(true)
-    
+
     try {
       const filteredMessage = filterText(trimmedMessage)
       await dispatch(sendMessage({
@@ -28,9 +28,11 @@ const MessageForm = () => {
         username,
       })).unwrap()
       setMessage('')
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Error sending message:', error)
-    } finally {
+    }
+    finally {
       setIsSending(false)
     }
   }
@@ -44,7 +46,7 @@ const MessageForm = () => {
             className="form-control"
             placeholder={t('chat.messagePlaceholder')}
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={e => setMessage(e.target.value)}
             disabled={isSending}
           />
           <button

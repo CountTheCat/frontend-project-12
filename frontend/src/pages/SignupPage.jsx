@@ -8,7 +8,7 @@ import { signup } from '../store/slices/authSlice'
 const SignupPage = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { isAuthenticated, loading, error } = useSelector((state) => state.auth)
+  const { isAuthenticated, loading, error } = useSelector(state => state.auth)
 
   if (isAuthenticated) {
     return <Navigate to="/" />
@@ -34,13 +34,16 @@ const SignupPage = () => {
         username: values.username,
         password: values.password,
       })).unwrap()
-    } catch (err) {
+    }
+    catch (err) {
       if (err === '409') {
         setFieldError('username', t('signup.errors.userExists'))
-      } else {
+      }
+      else {
         setFieldError('general', err || t('signup.errors.registrationError'))
       }
-    } finally {
+    }
+    finally {
       setSubmitting(false)
     }
   }
@@ -50,13 +53,13 @@ const SignupPage = () => {
       <div className="row justify-content-center">
         <div className="col-md-4">
           <h2 className="text-center mb-4">{t('signup.title')}</h2>
-          
+
           {error && (
             <div className="alert alert-danger" role="alert">
               {error}
             </div>
           )}
-          
+
           <Formik
             initialValues={{ username: '', password: '', confirmPassword: '' }}
             validationSchema={validationSchema}
@@ -110,9 +113,9 @@ const SignupPage = () => {
                   <div className="alert alert-danger">{errors.general}</div>
                 )}
 
-                <button 
-                  type="submit" 
-                  className="btn btn-primary w-100" 
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100"
                   disabled={isSubmitting || loading}
                 >
                   {isSubmitting || loading ? t('chat.sending') : t('signup.submit')}

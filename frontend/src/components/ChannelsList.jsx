@@ -9,7 +9,7 @@ import RemoveChannelModal from './modals/RemoveChannelModal'
 const ChannelsList = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { channels, currentChannelId } = useSelector((state) => state.channels)
+  const { channels, currentChannelId } = useSelector(state => state.channels)
   const [showAddModal, setShowAddModal] = useState(false)
   const [showRenameModal, setShowRenameModal] = useState(false)
   const [showRemoveModal, setShowRemoveModal] = useState(false)
@@ -66,7 +66,7 @@ const ChannelsList = () => {
                   borderRadius: '4px',
                   backgroundColor: isActive ? '#6c757d' : 'transparent',
                   transition: 'all 0.15s ease',
-                  overflow: 'hidden'
+                  overflow: 'hidden',
                 }}
                 onMouseEnter={(e) => {
                   if (!isActive) {
@@ -95,7 +95,7 @@ const ChannelsList = () => {
                     whiteSpace: 'nowrap',
                     overflow: 'hidden',
                     textOverflow: 'ellipsis',
-                    textAlign: 'left'
+                    textAlign: 'left',
                   }}
                 >
                   <span className="me-1" style={{ color: isActive ? '#fff' : '#6c757d' }}>#</span>
@@ -122,7 +122,7 @@ const ChannelsList = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        whiteSpace: 'nowrap'
+                        whiteSpace: 'nowrap',
                       }}
                     >
                       <span className="visually-hidden">{t('modals.channelManagement')}</span>

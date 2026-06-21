@@ -5,13 +5,14 @@ import { removeChannel } from '../../store/slices/channelsSlice'
 const RemoveChannelModal = ({ channel, onClose }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { loading } = useSelector((state) => state.channels)
+  const { loading } = useSelector(state => state.channels)
 
   const handleRemove = async () => {
     try {
       await dispatch(removeChannel(channel.id)).unwrap()
       onClose()
-    } catch (error) {
+    }
+    catch (error) {
       console.error('Ошибка удаления канала:', error)
     }
   }
@@ -26,7 +27,13 @@ const RemoveChannelModal = ({ channel, onClose }) => {
           </div>
           <div className="modal-body">
             <p>
-              {t('modals.removeChannel.confirm')} <strong>#{channel.name}</strong>?
+              {t('modals.removeChannel.confirm')}
+              {' '}
+              <strong>
+                #
+                {channel.name}
+              </strong>
+              ?
             </p>
             <p className="text-danger">{t('modals.removeChannel.warning')}</p>
           </div>

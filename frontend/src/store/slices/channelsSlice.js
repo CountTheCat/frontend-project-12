@@ -12,33 +12,36 @@ export const fetchChannels = createAsyncThunk(
   'channels/fetchChannels',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get('/channels')
-      return response.data
-    } catch (error) {
+      const { data } = await api.get('/channels')
+      return data
+    }
+    catch (error) {
       if (!error.response) {
         showNetworkError()
-      } else {
+      }
+      else {
         showLoadError()
       }
       return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки каналов')
     }
-  }
+  },
 )
 
 export const createChannel = createAsyncThunk(
   'channels/createChannel',
   async (channelData, { rejectWithValue }) => {
     try {
-      const response = await api.post('/channels', channelData)
+      const { data } = await api.post('/channels', channelData)
       showChannelCreated(channelData.name)
-      return response.data
-    } catch (error) {
+      return data
+    }
+    catch (error) {
       if (!error.response) {
         showNetworkError()
       }
       return rejectWithValue(error.response?.data?.message || 'Ошибка создания канала')
     }
-  }
+  },
 )
 
 export const renameChannel = createAsyncThunk(
@@ -46,16 +49,17 @@ export const renameChannel = createAsyncThunk(
   async ({ id, name }, { rejectWithValue }) => {
     try {
       const channelId = typeof id === 'string' ? parseInt(id, 10) : id
-      const response = await api.patch(`/channels/${channelId}`, { name })
+      const { data } = await api.patch(`/channels/${channelId}`, { name })
       showChannelRenamed(name)
-      return { id: channelId, name }
-    } catch (error) {
+      return { id: channelId, name: data.name || name }
+    }
+    catch (error) {
       if (!error.response) {
         showNetworkError()
       }
       return rejectWithValue(error.response?.data?.message || 'Ошибка переименования канала')
     }
-  }
+  },
 )
 
 export const removeChannel = createAsyncThunk(
@@ -65,18 +69,19 @@ export const removeChannel = createAsyncThunk(
       const channelId = typeof id === 'string' ? parseInt(id, 10) : id
       await api.delete(`/channels/${channelId}`)
       const state = getState()
-      const channel = state.channels.channels.find((ch) => ch.id === id)
+      const channel = state.channels.channels.find(ch => ch.id === id)
       if (channel) {
         showChannelRemoved(channel.name)
       }
       return id
-    } catch (error) {
+    }
+    catch (error) {
       if (!error.response) {
         showNetworkError()
       }
       return rejectWithValue(error.response?.data?.message || 'Ошибка удаления канала')
     }
-  }
+  },
 )
 
 const channelsSlice = createSlice({
@@ -125,7 +130,7 @@ const channelsSlice = createSlice({
       })
       .addCase(renameChannel.fulfilled, (state, action) => {
         const { id, name } = action.payload
-        const channel = state.channels.find((ch) => String(ch.id) === String(id))
+        const channel = state.channels.find(ch => String(ch.id) === String(id))
         if (channel) {
           channel.name = name
         }
@@ -139,7 +144,7 @@ const channelsSlice = createSlice({
       })
       .addCase(removeChannel.fulfilled, (state, action) => {
         const id = action.payload
-        state.channels = state.channels.filter((ch) => String(ch.id) !== String(id))
+        state.channels = state.channels.filter(ch => String(ch.id) !== String(id))
         if (String(state.currentChannelId) === String(id) && state.channels.length > 0) {
           state.currentChannelId = state.channels[0].id
         }

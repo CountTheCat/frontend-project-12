@@ -7,7 +7,7 @@ import NotFoundPage from './pages/NotFoundPage'
 import Header from './components/Header'
 
 function App() {
-  const { isAuthenticated } = useSelector((state) => state.auth)
+  const { isAuthenticated } = useSelector(state => state.auth)
 
   return (
     <BrowserRouter>
@@ -15,9 +15,9 @@ function App() {
         <Header />
         <div className="flex-grow-1 overflow-hidden">
           <Routes>
-            <Route 
-              path="/" 
-              element={isAuthenticated ? <ChatPage /> : <Navigate to="/login" />} 
+            <Route
+              path="/"
+              element={isAuthenticated ? <ChatPage /> : <Navigate to="/login" />}
             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />

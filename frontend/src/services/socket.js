@@ -9,7 +9,7 @@ const socket = io('/', {
   reconnectionDelay: 1000,
   auth: (cb) => {
     cb({ token: getToken() })
-  }
+  },
 })
 
 socket.on('connect', () => {

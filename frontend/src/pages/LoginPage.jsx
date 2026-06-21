@@ -7,7 +7,7 @@ import { login, clearError } from '../store/slices/authSlice'
 const LoginPage = () => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
-  const { isAuthenticated, loading, error } = useSelector((state) => state.auth)
+  const { isAuthenticated, loading, error } = useSelector(state => state.auth)
 
   if (isAuthenticated) {
     return <Navigate to="/" />
@@ -17,21 +17,24 @@ const LoginPage = () => {
     const errors = {}
     const trimmedUsername = values.username?.trim() || ''
     const trimmedPassword = values.password?.trim() || ''
-    
+
     if (!trimmedUsername) {
       errors.username = t('signup.errors.usernameRequired')
-    } else if (trimmedUsername.length < 3) {
+    }
+    else if (trimmedUsername.length < 3) {
       errors.username = t('signup.errors.usernameMin')
-    } else if (trimmedUsername.length > 20) {
+    }
+    else if (trimmedUsername.length > 20) {
       errors.username = t('signup.errors.usernameMax')
     }
-    
+
     if (!trimmedPassword) {
       errors.password = t('signup.errors.passwordRequired')
-    } else if (trimmedPassword.length < 5) {
+    }
+    else if (trimmedPassword.length < 5) {
       errors.password = t('signup.errors.passwordMin')
     }
-    
+
     return errors
   }
 
@@ -40,29 +43,31 @@ const LoginPage = () => {
       <div className="row justify-content-center">
         <div className="col-md-4">
           <h2 className="text-center mb-4">{t('login.title')}</h2>
-          
+
           {error && (
             <div className="alert alert-danger" role="alert">
               {error}
             </div>
           )}
-          
+
           <Formik
             initialValues={{ username: '', password: '' }}
             validate={validate}
             onSubmit={async (values, { setSubmitting, setFieldError }) => {
               dispatch(clearError())
-              
+
               const trimmedValues = {
                 username: values.username.trim(),
-                password: values.password.trim()
+                password: values.password.trim(),
               }
-              
+
               try {
                 await dispatch(login(trimmedValues)).unwrap()
-              } catch (err) {
+              }
+              catch (err) {
                 setFieldError('general', err)
-              } finally {
+              }
+              finally {
                 setSubmitting(false)
               }
             }}
@@ -101,9 +106,9 @@ const LoginPage = () => {
                   <div className="alert alert-danger">{errors.general}</div>
                 )}
 
-                <button 
-                  type="submit" 
-                  className="btn btn-primary w-100" 
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100"
                   disabled={isSubmitting || loading}
                 >
                   {isSubmitting || loading ? t('chat.sending') : t('login.submit')}
@@ -115,7 +120,7 @@ const LoginPage = () => {
               </Form>
             )}
           </Formik>
-          
+
           <div className="mt-3 text-center text-muted">
             <small>{t('login.testUser')}</small>
           </div>

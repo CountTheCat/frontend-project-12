@@ -8,15 +8,17 @@ export const fetchMessages = createAsyncThunk(
     try {
       const response = await api.get('/messages')
       return response.data
-    } catch (error) {
+    }
+    catch (error) {
       if (!error.response) {
         showNetworkError()
-      } else {
+      }
+      else {
         showLoadError()
       }
       return rejectWithValue(error.response?.data?.message || 'Ошибка загрузки сообщений')
     }
-  }
+  },
 )
 
 export const sendMessage = createAsyncThunk(
@@ -25,13 +27,14 @@ export const sendMessage = createAsyncThunk(
     try {
       const response = await api.post('/messages', { channelId, body, username })
       return response.data
-    } catch (error) {
+    }
+    catch (error) {
       if (!error.response) {
         showNetworkError()
       }
       return rejectWithValue(error.response?.data?.message || 'Ошибка отправки сообщения')
     }
-  }
+  },
 )
 
 const messagesSlice = createSlice({
