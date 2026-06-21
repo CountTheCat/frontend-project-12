@@ -1,14 +1,22 @@
+import { useEffect } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate, Link } from 'react-router-dom'
+import { Navigate, Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { signup } from '../store/slices/authSlice'
 
 const SignupPage = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isAuthenticated, loading, error } = useSelector(state => state.auth)
+  const { isAuthenticated, loading, error } = useSelector((state) => state.auth)
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/')
+    }
+  }, [isAuthenticated, navigate])
 
   if (isAuthenticated) {
     return <Navigate to="/" />
@@ -34,16 +42,13 @@ const SignupPage = () => {
         username: values.username,
         password: values.password,
       })).unwrap()
-    }
-    catch (err) {
+    } catch (err) {
       if (err === '409') {
         setFieldError('username', t('signup.errors.userExists'))
-      }
-      else {
+      } else {
         setFieldError('general', err || t('signup.errors.registrationError'))
       }
-    }
-    finally {
+    } finally {
       setSubmitting(false)
     }
   }
