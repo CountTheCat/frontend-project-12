@@ -11,7 +11,7 @@ build:
 	cd frontend && npm run build
 
 start:
-	npm run start
+	npx start-server -s ./frontend/dist
 
 dev:
 	@echo "Starting backend..."

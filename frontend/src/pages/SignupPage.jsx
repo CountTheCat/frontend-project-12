@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
-import { Navigate, Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { signup } from '../store/slices/authSlice'
 
@@ -17,10 +17,6 @@ const SignupPage = () => {
       navigate('/')
     }
   }, [isAuthenticated, navigate])
-
-  if (isAuthenticated) {
-    return <Navigate to="/" />
-  }
 
   const validationSchema = Yup.object({
     username: Yup.string()
@@ -37,12 +33,16 @@ const SignupPage = () => {
   })
 
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+    console.log('📤 Отправка регистрации:', { username: values.username, password: values.password })
     try {
-      await dispatch(signup({
+      const result = await dispatch(signup({
         username: values.username,
         password: values.password,
       })).unwrap()
+      console.log('✅ Регистрация успешна:', result)
+      navigate('/')
     } catch (err) {
+      console.error('❌ Ошибка регистрации:', err)
       if (err === '409') {
         setFieldError('username', t('signup.errors.userExists'))
       } else {
