@@ -1,6 +1,7 @@
 import filter from 'leo-profanity'
 
 filter.loadDictionary('ru')
+filter.loadDictionary('en')
 
 filter.add([
   'член', 'члены', 'членов',

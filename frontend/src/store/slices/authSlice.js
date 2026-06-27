@@ -6,9 +6,7 @@ export const signup = createAsyncThunk(
   'auth/signup',
   async ({ username, password }, { rejectWithValue }) => {
     try {
-      console.log('📤 signup thunk:', { username, password })
       const response = await api.post('/signup', { username, password })
-      console.log('📥 Ответ сервера:', response.data)
       const { token, username: userName } = response.data
 
       if (!token) {
@@ -20,7 +18,6 @@ export const signup = createAsyncThunk(
 
       return { token, username: userName }
     } catch (error) {
-      console.error('❌ Ошибка в signup thunk:', error.response?.data)
       if (!error.response) {
         showNetworkError()
       }
@@ -36,9 +33,7 @@ export const login = createAsyncThunk(
   'auth/login',
   async ({ username, password }, { rejectWithValue }) => {
     try {
-      console.log('📤 login thunk:', { username, password })
       const response = await api.post('/login', { username, password })
-      console.log('📥 Ответ сервера:', response.data)
       const { token, username: userName } = response.data
 
       if (!token) {
@@ -50,9 +45,11 @@ export const login = createAsyncThunk(
 
       return { token, username: userName }
     } catch (error) {
-      console.error('❌ Ошибка в login thunk:', error.response?.data)
       if (!error.response) {
         showNetworkError()
+      }
+      if (error.response?.status === 401) {
+        return rejectWithValue('Неверные имя пользователя или пароль')
       }
       return rejectWithValue(error.response?.data?.message || 'Ошибка авторизации')
     }
@@ -93,13 +90,11 @@ const authSlice = createSlice({
         state.token = action.payload.token
         state.username = action.payload.username
         state.error = null
-        console.log('✅ signup fulfilled, isAuthenticated:', true)
       })
       .addCase(signup.rejected, (state, action) => {
         state.loading = false
         state.isAuthenticated = false
         state.error = action.payload
-        console.log('❌ signup rejected:', action.payload)
       })
       .addCase(login.pending, (state) => {
         state.loading = true

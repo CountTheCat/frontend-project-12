@@ -3,6 +3,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
+import FloatingLabel from 'react-bootstrap/FloatingLabel'
 import { renameChannel } from '../../store/slices/channelsSlice'
 import { filterText } from '../../utils/filter'
 
@@ -16,19 +17,17 @@ const RenameChannelModal = ({ channel, onClose }) => {
     inputRef.current?.focus()
   }, [])
 
+  const channelsName = channels
+    .filter(ch => ch.id !== channel.id)
+    .map(ch => ch.name)
+
   const validationSchema = Yup.object({
     name: Yup.string()
+      .trim()
+      .required(t('modals.renameChannel.errors.required'))
       .min(3, t('modals.renameChannel.errors.min'))
       .max(20, t('modals.renameChannel.errors.max'))
-      .matches(/^[a-zA-Zа-яА-Я0-9]+$/, t('modals.renameChannel.errors.invalid'))
-      .required(t('modals.renameChannel.errors.required'))
-      .test('unique', t('modals.renameChannel.errors.unique'), function (value) {
-        return !channels.some(ch => ch.name === value && ch.id !== channel.id)
-      })
-      .test('profanity', 'Название содержит недопустимые слова', function (value) {
-        const filtered = filterText(value)
-        return filtered === value
-      }),
+      .notOneOf(channelsName, t('modals.renameChannel.errors.unique')),
   })
 
   const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
@@ -61,19 +60,17 @@ const RenameChannelModal = ({ channel, onClose }) => {
             {({ isSubmitting, errors, handleSubmit }) => (
               <Form onSubmit={handleSubmit}>
                 <div className="modal-body">
-                  <div className="mb-3">
-                    <label htmlFor="name" className="form-label">
-                      {t('modals.renameChannel.name')}
-                    </label>
+                  <FloatingLabel controlId="name" label={t('modals.renameChannel.name')} className="mb-3">
                     <Field
                       innerRef={inputRef}
                       type="text"
                       name="name"
+                      id="name"
                       className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                      placeholder={t('modals.renameChannel.namePlaceholder')}
+                      placeholder={t('modals.renameChannel.name')}
                     />
                     <ErrorMessage name="name" component="div" className="invalid-feedback" />
-                  </div>
+                  </FloatingLabel>
                 </div>
                 <div className="modal-footer">
                   <button type="button" className="btn btn-secondary" onClick={onClose}>

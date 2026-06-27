@@ -8,39 +8,47 @@
     "username": "Ваш ник",
     "password": "Пароль",
     "submit": "Войти",
-    "signupLink": "Нет аккаунта? Зарегистрироваться",
-    "testUser": "Тестовый пользователь: admin / admin"
+    "signupLink": "Регистрация",
+    "testUser": "Тестовый пользователь: admin / admin",
+    "noAccount": "Нет аккаунта?"
   },
   "signup": {
     "title": "Регистрация",
     "username": "Имя пользователя",
     "password": "Пароль",
-    "confirmPassword": "Подтверждение пароля",
+    "confirmPassword": "Подтвердите пароль",
     "submit": "Зарегистрироваться",
     "loginLink": "Уже есть аккаунт? Войти",
     "errors": {
       "usernameRequired": "Имя пользователя обязательно",
-      "usernameMin": "Минимум 3 символа",
-      "usernameMax": "Максимум 20 символов",
+      "usernameMin": "От 3 до 20 символов",
+      "usernameMax": "От 3 до 20 символов",
       "usernameInvalid": "Только буквы и цифры",
       "passwordRequired": "Пароль обязателен",
       "passwordMin": "Не менее 6 символов",
       "confirmPasswordRequired": "Обязательное поле",
       "confirmPasswordMatch": "Пароли должны совпадать",
-      "userExists": "Пользователь с таким именем уже существует",
+      "userExists": "Такой пользователь уже существует",
       "registrationError": "Ошибка регистрации"
     }
   },
   "chat": {
     "loading": "Загрузка...",
     "channels": "Каналы",
-    "addChannel": "Добавить канал",
+    "addChannel": "+",
     "noMessages": "Нет сообщений. Напишите первое!",
     "messagePlaceholder": "Введите сообщение...",
     "send": "Отправить",
-    "sending": "Отправка..."
+    "sending": "Отправка...",
+    "ariaLabel": "Новое сообщение",
+    "messagesCount_one": "{{count}} сообщение",
+    "messagesCount_few": "{{count}} сообщения",
+    "messagesCount_many": "{{count}} сообщений",
+    "messagesCount_other": "{{count}} сообщений",
+    "selectChannel": "Выберите канал"
   },
   "modals": {
+    "channelManagement": "Управление каналом",
     "addChannel": {
       "title": "Добавить канал",
       "name": "Имя канала",
@@ -94,7 +102,7 @@
   },
   "errors": {
     "auth": {
-      "unauthorized": "Неверное имя пользователя или пароль",
+      "unauthorized": "Неверные имя пользователя или пароль",
       "loginError": "Ошибка авторизации"
     },
     "notFound": {

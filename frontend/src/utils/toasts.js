@@ -24,13 +24,13 @@ export const showLoadError = () => {
 }
 
 export const showChannelCreated = (name) => {
-  toast.success(`${t('toasts.channelCreated')}: #${name}`)
+  toast.success(`${t('toasts.channelCreated')} #${name}`)
 }
 
 export const showChannelRenamed = (name) => {
-  toast.success(`${t('toasts.channelRenamed')}: #${name}`)
+  toast.success(`${t('toasts.channelRenamed')} #${name}`)
 }
 
 export const showChannelRemoved = (name) => {
-  toast.success(`${t('toasts.channelRemoved')}: #${name}`)
+  toast.success(`${t('toasts.channelRemoved')} #${name}`)
 }

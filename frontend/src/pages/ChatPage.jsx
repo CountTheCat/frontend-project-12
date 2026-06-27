@@ -12,9 +12,9 @@ const ChatPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { t } = useTranslation()
-  const { isAuthenticated } = useSelector(state => state.auth)
-  const { loading: channelsLoading } = useSelector(state => state.channels)
-  const { loading: messagesLoading } = useSelector(state => state.messages)
+  const { isAuthenticated } = useSelector((state) => state.auth)
+  const { loading: channelsLoading } = useSelector((state) => state.channels)
+  const { loading: messagesLoading } = useSelector((state) => state.messages)
   const hasLoaded = useRef(false)
 
   const onNewMessage = useCallback((message) => {

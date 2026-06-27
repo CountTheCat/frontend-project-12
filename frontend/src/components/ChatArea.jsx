@@ -5,12 +5,12 @@ import MessageForm from './MessageForm'
 
 const ChatArea = () => {
   const { t } = useTranslation()
-  const { currentChannelId, channels } = useSelector(state => state.channels)
-  const { messages } = useSelector(state => state.messages)
-  const currentChannel = channels.find(ch => ch.id === currentChannelId)
+  const { currentChannelId, channels } = useSelector((state) => state.channels)
+  const { messages } = useSelector((state) => state.messages)
+  const currentChannel = channels.find((ch) => ch.id === currentChannelId)
 
   const channelMessages = messages.filter(
-    message => message.channelId === currentChannelId,
+    (message) => message.channelId === currentChannelId,
   )
 
   return (
@@ -22,8 +22,6 @@ const ChatArea = () => {
           {currentChannel?.name || t('chat.selectChannel')}
         </p>
         <span className="text-muted" style={{ fontSize: '13px' }}>
-          {channelMessages.length}
-          {' '}
           {t('chat.messagesCount', { count: channelMessages.length })}
         </span>
       </div>
