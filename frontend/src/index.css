@@ -115,6 +115,12 @@ code {
   background: var(--code-bg);
 }
 
+/* Заголовки в карточках */
+.card h1 {
+  color: #212529 !important;
+  font-size: 28px !important;
+}
+
 .list-group-item .btn {
   overflow: hidden;
   text-overflow: ellipsis;

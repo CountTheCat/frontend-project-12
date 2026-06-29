@@ -4,7 +4,7 @@
     "logout": "Выйти"
   },
   "login": {
-    "title": "Вход в чат",
+    "title": "Войти",
     "username": "Ваш ник",
     "password": "Пароль",
     "submit": "Войти",
