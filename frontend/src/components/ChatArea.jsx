@@ -14,14 +14,14 @@ const ChatArea = () => {
   )
 
   return (
-    <div className="d-flex flex-column h-100 bg-white" style={{ borderRadius: '0 12px 12px 0', paddingBottom: '30px' }}>
-      <div className="bg-light px-4 py-2 border-bottom flex-shrink-0" style={{ minHeight: '48px' }}>
-        <p className="m-0" style={{ fontSize: '16px', fontWeight: 600 }}>
+    <div className="d-flex flex-column h-100 bg-white rounded-end pb-3">
+      <div className="bg-light px-4 py-2 border-bottom flex-shrink-0">
+        <p className="m-0 fw-semibold">
           #
           {' '}
           {currentChannel?.name || t('chat.selectChannel')}
         </p>
-        <span className="text-muted" style={{ fontSize: '13px' }}>
+        <span className="text-muted small">
           {t('chat.messagesCount', { count: channelMessages.length })}
         </span>
       </div>

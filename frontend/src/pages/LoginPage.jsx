@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Formik, Form as FormikForm, Field } from 'formik'
+import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { Navigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -24,6 +25,28 @@ const LoginPage = () => {
     return <Navigate to="/" />
   }
 
+  const validation = Yup.object({
+    username: Yup.string().required(t('signup.errors.usernameRequired')),
+    password: Yup.string().required(t('signup.errors.passwordRequired')),
+  })
+
+  const handleSubmit = async (values, { setSubmitting }) => {
+    dispatch(clearError())
+    setAuthFailed(false)
+
+    try {
+      await dispatch(login({
+        username: values.username.trim(),
+        password: values.password.trim(),
+      })).unwrap()
+    } catch (err) {
+      setAuthFailed(true)
+      inputRef.current?.select()
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <Container className="h-100" fluid>
       <Row className="justify-content-center align-content-center h-100">
@@ -34,41 +57,18 @@ const LoginPage = () => {
                 <img
                   src={avatar}
                   className="rounded-circle"
-                  alt="Log in page"
-                  style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                  alt={t('login.title')}
+                  width="150"
+                  height="150"
                 />
               </div>
               <Formik
                 initialValues={{ username: '', password: '' }}
-                onSubmit={async (values, { setSubmitting, setErrors }) => {
-                  dispatch(clearError())
-                  setAuthFailed(false)
-
-                  const errors = {}
-                  const trimmedUsername = values.username?.trim() || ''
-                  const trimmedPassword = values.password?.trim() || ''
-
-                  if (!trimmedUsername) errors.username = t('signup.errors.usernameRequired')
-                  if (!trimmedPassword) errors.password = t('signup.errors.passwordRequired')
-
-                  if (Object.keys(errors).length > 0) {
-                    setErrors(errors)
-                    setSubmitting(false)
-                    return
-                  }
-
-                  try {
-                    await dispatch(login({ username: trimmedUsername, password: trimmedPassword })).unwrap()
-                  } catch (err) {
-                    setAuthFailed(true)
-                    inputRef.current?.select()
-                  } finally {
-                    setSubmitting(false)
-                  }
-                }}
+                validationSchema={validation}
+                onSubmit={handleSubmit}
               >
                 {({ isSubmitting, errors, touched, handleSubmit }) => (
-                  <Form className="col-12 col-md-6 mt-3 mt-mb-0" onSubmit={handleSubmit}>
+                  <Form className="col-12 col-md-6 mt-3 mt-md-0" onSubmit={handleSubmit}>
                     <h1 className="text-center mb-4">{t('login.title')}</h1>
                     <fieldset disabled={isSubmitting || loading}>
                       <Form.Group className="form-floating mb-3">
@@ -83,9 +83,9 @@ const LoginPage = () => {
                             innerRef={inputRef}
                           />
                         </FloatingLabel>
-                        {errors.username && touched.username && (
-                          <div className="invalid-feedback">{errors.username}</div>
-                        )}
+                        <Form.Control.Feedback type="invalid">
+                          {errors.username || (authFailed ? t('errors.auth.unauthorized') : '')}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       <Form.Group className="form-floating mb-3">
@@ -99,12 +99,9 @@ const LoginPage = () => {
                             className={`form-control ${(touched.password && errors.password) || authFailed ? 'is-invalid' : ''}`}
                           />
                         </FloatingLabel>
-                        {authFailed && (
-                          <div className="invalid-feedback d-block">{t('errors.auth.unauthorized')}</div>
-                        )}
-                        {!authFailed && errors.password && touched.password && (
-                          <div className="invalid-feedback">{errors.password}</div>
-                        )}
+                        <Form.Control.Feedback type="invalid">
+                          {errors.password || (authFailed ? t('errors.auth.unauthorized') : '')}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       <Button type="submit" disabled={isSubmitting || loading} variant="outline-primary" className="w-100 mb-3">

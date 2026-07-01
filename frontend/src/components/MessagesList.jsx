@@ -41,13 +41,13 @@ const MessagesList = () => {
   return (
     <div className="flex-grow-1 overflow-auto px-4 py-3">
       {channelMessages.map(message => (
-        <div key={message.id} className="mb-1" style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-          <strong style={{ fontSize: '14px', color: '#212529' }}>
+        <div key={message.id} className="d-flex align-items-baseline mb-1 gap-2">
+          <strong className="text-dark">
             {message.username}
             :
           </strong>
-          <span style={{ fontSize: '14px', color: '#212529' }}>{message.body}</span>
-          <span className="text-muted" style={{ fontSize: '11px', marginLeft: 'auto' }}>
+          <span className="text-dark">{message.body}</span>
+          <span className="text-muted ms-auto">
             {formatTime(message.createdAt)}
           </span>
         </div>

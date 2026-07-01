@@ -15,7 +15,7 @@ const Header = () => {
   }
 
   return (
-    <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white" style={{ marginTop: 0 }}>
+    <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white mt-0">
       <div className="container">
         <Link to="/" className="navbar-brand">
           {t('header.brand')}

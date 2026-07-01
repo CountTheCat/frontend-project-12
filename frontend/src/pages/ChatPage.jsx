@@ -59,7 +59,7 @@ const ChatPage = () => {
 
   return (
     <div className="container h-100">
-      <div className="row h-100 overflow-hidden" style={{ marginTop: '8px' }}>
+      <div className="row h-100 overflow-hidden mt-1">
         <div className="col-4 col-md-3 col-lg-2 p-0 bg-light border-end h-100">
           <ChannelsList />
         </div>

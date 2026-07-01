@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { BsPlusSquare } from 'react-icons/bs'
+import { Button, Nav, ButtonGroup, Dropdown } from 'react-bootstrap'
 import { setCurrentChannel } from '../store/slices/channelsSlice'
 import AddChannelModal from './modals/AddChannelModal'
 import RenameChannelModal from './modals/RenameChannelModal'
@@ -36,7 +37,7 @@ const ChannelsList = () => {
 
   return (
     <div className="d-flex flex-column h-100 w-100">
-      <div className="d-flex justify-content-between align-items-center px-3 py-2 border-bottom flex-shrink-0" style={{ minHeight: '48px' }}>
+      <div className="d-flex justify-content-between align-items-center px-3 py-2 border-bottom flex-shrink-0">
         <span className="fw-bold text-secondary small text-uppercase">{t('chat.channels')}</span>
         <button
           type="button"
@@ -47,103 +48,53 @@ const ChannelsList = () => {
           <span className="visually-hidden">+</span>
         </button>
       </div>
-      <ul className="nav flex-column px-2 overflow-auto flex-grow-1" id="channels-box">
+      <Nav className="flex-column px-2 overflow-auto flex-grow-1" as="ul">
         {channels.map((channel) => {
           const isActive = currentChannelId === channel.id
-          return (
-            <li key={channel.id} className="nav-item w-100" style={{ minHeight: '36px', flexShrink: 0 }}>
-              <div
-                className={`d-flex align-items-center w-100 ${isActive ? 'active-channel' : ''}`}
-                style={{
-                  borderRadius: '4px',
-                  backgroundColor: isActive ? '#6c757d' : 'transparent',
-                  transition: 'all 0.15s ease',
-                  overflow: 'hidden',
-                }}
-                onMouseEnter={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.backgroundColor = '#f8f9fa'
-                  }
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    e.currentTarget.style.backgroundColor = 'transparent'
-                  }
-                }}
-              >
-                <button
-                  type="button"
+          if (!isRemovable(channel)) {
+            return (
+              <Nav.Item key={channel.id} className="w-100" as="li">
+                <Button
+                  variant={isActive ? 'secondary' : 'light'}
+                  className="w-100 rounded-0 text-start text-truncate"
                   onClick={() => handleChannelClick(channel.id)}
-                  style={{
-                    border: 'none',
-                    borderRadius: '4px 0 0 4px',
-                    padding: '6px 6px 6px 12px',
-                    fontWeight: isActive ? '600' : '400',
-                    color: isActive ? '#fff' : '#212529',
-                    background: 'transparent',
-                    transition: 'all 0.15s ease',
-                    flex: 1,
-                    minHeight: '36px',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                    textAlign: 'left',
-                  }}
                 >
-                  <span className="me-1" style={{ color: isActive ? '#fff' : '#6c757d' }}>#</span>
+                  <span className="me-1">#</span>
                   {channel.name}
-                </button>
-                {isRemovable(channel) && (
-                  <div className="btn-group" role="group">
-                    <button
-                      type="button"
-                      className={`flex-grow-0 dropdown-toggle dropdown-toggle-split btn btn-sm ${isActive ? 'btn-secondary' : ''}`}
-                      id={`dropdownMenu-${channel.id}`}
-                      data-bs-toggle="dropdown"
-                      aria-expanded="false"
-                      style={{
-                        border: 'none',
-                        background: isActive ? '#6c757d' : 'transparent',
-                        color: isActive ? '#fff' : '#6c757d',
-                        padding: '6px 10px 6px 6px',
-                        borderRadius: '0 4px 4px 0',
-                        minHeight: '36px',
-                        minWidth: '28px',
-                        transition: 'none',
-                        flexShrink: 0,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      <span className="visually-hidden">{t('modals.channelManagement')}</span>
-                    </button>
-                    <ul className="dropdown-menu" aria-labelledby={`dropdownMenu-${channel.id}`}>
-                      <li>
-                        <button
-                          className="dropdown-item"
-                          onClick={() => handleRename(channel)}
-                        >
-                          {t('modals.renameChannel.title')}
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="dropdown-item text-danger"
-                          onClick={() => handleRemove(channel)}
-                        >
-                          {t('modals.removeChannel.title')}
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </li>
+                </Button>
+              </Nav.Item>
+            )
+          }
+          return (
+            <Nav.Item key={channel.id} className="w-100" as="li">
+              <Dropdown as={ButtonGroup} className="d-flex">
+                <Button
+                  variant={isActive ? 'secondary' : 'light'}
+                  className="w-100 rounded-0 text-start text-truncate"
+                  onClick={() => handleChannelClick(channel.id)}
+                >
+                  <span className="me-1">#</span>
+                  {channel.name}
+                </Button>
+                <Dropdown.Toggle
+                  variant={isActive ? 'secondary' : 'light'}
+                  className="flex-grow-0 dropdown-toggle-split"
+                >
+                  <span className="visually-hidden">{t('modals.channelManagement')}</span>
+                </Dropdown.Toggle>
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleRename(channel)}>
+                    {t('modals.renameChannel.title')}
+                  </Dropdown.Item>
+                  <Dropdown.Item className="text-danger" onClick={() => handleRemove(channel)}>
+                    {t('modals.removeChannel.title')}
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </Nav.Item>
           )
         })}
-      </ul>
+      </Nav>
 
       {showAddModal && <AddChannelModal onClose={() => setShowAddModal(false)} />}
       {showRenameModal && selectedChannel && (

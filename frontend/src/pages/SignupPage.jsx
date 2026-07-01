@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Formik, Form as FormikForm, Field } from 'formik'
+import * as Yup from 'yup'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -22,6 +23,39 @@ const SignupPage = () => {
     }
   }, [isAuthenticated, navigate])
 
+  const validation = Yup.object({
+    username: Yup.string()
+      .min(3, t('signup.errors.usernameMin'))
+      .max(20, t('signup.errors.usernameMax'))
+      .matches(/^[a-zA-Zа-яА-Я0-9_-]+$/, t('signup.errors.usernameInvalid'))
+      .required(t('signup.errors.usernameRequired')),
+    password: Yup.string()
+      .min(6, t('signup.errors.passwordMin'))
+      .required(t('signup.errors.passwordRequired')),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref('password')], t('signup.errors.confirmPasswordMatch'))
+      .required(t('signup.errors.confirmPasswordRequired')),
+  })
+
+  const handleSubmit = async (values, { setSubmitting, setFieldError }) => {
+    setFailedRegistration(false)
+    try {
+      await dispatch(signup({
+        username: values.username.trim(),
+        password: values.password.trim(),
+      })).unwrap()
+    } catch (err) {
+      if (err === '409') {
+        setFailedRegistration(true)
+        setFieldError('username', t('signup.errors.userExists'))
+      } else {
+        setFieldError('general', err || t('signup.errors.registrationError'))
+      }
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
   return (
     <Container className="container-fluid h-100">
       <Row className="justify-content-center align-content-center h-100">
@@ -32,50 +66,15 @@ const SignupPage = () => {
                 <img
                   src={avatar1}
                   className="rounded-circle"
-                  alt="Registration Avatar"
-                  style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                  alt={t('signup.title')}
+                  width="150"
+                  height="150"
                 />
               </div>
               <Formik
                 initialValues={{ username: '', password: '', confirmPassword: '' }}
-                onSubmit={async (values, { setSubmitting, setErrors }) => {
-                  setFailedRegistration(false)
-
-                  const errors = {}
-                  const trimmedUsername = values.username?.trim() || ''
-                  const trimmedPassword = values.password?.trim() || ''
-                  const trimmedConfirmPassword = values.confirmPassword?.trim() || ''
-
-                  if (!trimmedUsername) errors.username = t('signup.errors.usernameRequired')
-                  else if (trimmedUsername.length < 3) errors.username = t('signup.errors.usernameMin')
-                  else if (trimmedUsername.length > 20) errors.username = t('signup.errors.usernameMax')
-                  else if (!/^[a-zA-Zа-яА-Я0-9_-]+$/.test(trimmedUsername)) errors.username = t('signup.errors.usernameInvalid')
-
-                  if (!trimmedPassword) errors.password = t('signup.errors.passwordRequired')
-                  else if (trimmedPassword.length < 6) errors.password = t('signup.errors.passwordMin')
-
-                  if (!trimmedConfirmPassword) errors.confirmPassword = t('signup.errors.confirmPasswordRequired')
-                  else if (trimmedConfirmPassword !== trimmedPassword) errors.confirmPassword = t('signup.errors.confirmPasswordMatch')
-
-                  if (Object.keys(errors).length > 0) {
-                    setErrors(errors)
-                    setSubmitting(false)
-                    return
-                  }
-
-                  try {
-                    await dispatch(signup({ username: trimmedUsername, password: trimmedPassword })).unwrap()
-                  } catch (err) {
-                    if (err === '409') {
-                      setFailedRegistration(true)
-                      setErrors({ username: t('signup.errors.userExists') })
-                    } else {
-                      setErrors({ general: err || t('signup.errors.registrationError') })
-                    }
-                  } finally {
-                    setSubmitting(false)
-                  }
-                }}
+                validationSchema={validation}
+                onSubmit={handleSubmit}
               >
                 {({ isSubmitting, errors, touched, handleSubmit }) => (
                   <Form className="w-50" onSubmit={handleSubmit}>
@@ -92,12 +91,9 @@ const SignupPage = () => {
                             className={`form-control ${(touched.username && errors.username) || failedRegistration ? 'is-invalid' : ''}`}
                           />
                         </FloatingLabel>
-                        {errors.username && touched.username && (
-                          <div className="invalid-feedback">{errors.username}</div>
-                        )}
-                        {failedRegistration && !errors.username && (
-                          <div className="invalid-feedback">{t('signup.errors.userExists')}</div>
-                        )}
+                        <Form.Control.Feedback type="invalid">
+                          {errors.username || (failedRegistration ? t('signup.errors.userExists') : '')}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       <Form.Group className="form-floating mb-3">
@@ -111,9 +107,9 @@ const SignupPage = () => {
                             className={`form-control ${touched.password && errors.password ? 'is-invalid' : ''}`}
                           />
                         </FloatingLabel>
-                        {errors.password && touched.password && (
-                          <div className="invalid-feedback">{errors.password}</div>
-                        )}
+                        <Form.Control.Feedback type="invalid">
+                          {errors.password}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       <Form.Group className="form-floating mb-3">
@@ -127,9 +123,9 @@ const SignupPage = () => {
                             className={`form-control ${touched.confirmPassword && errors.confirmPassword ? 'is-invalid' : ''}`}
                           />
                         </FloatingLabel>
-                        {errors.confirmPassword && touched.confirmPassword && (
-                          <div className="invalid-feedback">{errors.confirmPassword}</div>
-                        )}
+                        <Form.Control.Feedback type="invalid">
+                          {errors.confirmPassword}
+                        </Form.Control.Feedback>
                       </Form.Group>
 
                       <Button type="submit" disabled={isSubmitting || loading} className="w-100" variant="outline-primary">

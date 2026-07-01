@@ -18,32 +18,26 @@ const RemoveChannelModal = ({ channel, onClose }) => {
   }
 
   return (
-    <div className="modal show d-block" tabIndex="-1" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-      <div className="modal-dialog">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">{t('modals.removeChannel.title')}</h5>
-            <button type="button" className="btn-close" onClick={onClose}></button>
-          </div>
-          <div className="modal-body">
-            <p>
-              {t('modals.removeChannel.confirm')}
-              {' '}
-              <strong>
-                #
-                {channel.name}
-              </strong>
-              ?
-            </p>
-            <p className="text-danger">{t('modals.removeChannel.warning')}</p>
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" onClick={onClose}>
-              {t('modals.removeChannel.cancel')}
-            </button>
-            <button type="button" className="btn btn-danger" onClick={handleRemove} disabled={loading}>
-              {loading ? t('modals.removeChannel.submitting') : t('modals.removeChannel.submit')}
-            </button>
+    <div className="modal-backdrop show">
+      <div className="modal show d-block" tabIndex="-1">
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">{t('modals.removeChannel.title')}</h5>
+              <button type="button" className="btn-close" onClick={onClose}></button>
+            </div>
+            <div className="modal-body">
+              <p className="lead">{t('modals.removeChannel.confirm')}</p>
+              <p className="text-danger">{t('modals.removeChannel.warning')}</p>
+              <div className="modal-footer">
+                <button type="button" className="btn btn-secondary" onClick={onClose}>
+                  {t('modals.removeChannel.cancel')}
+                </button>
+                <button type="button" className="btn btn-danger" onClick={handleRemove} disabled={loading}>
+                  {loading ? t('modals.removeChannel.submitting') : t('modals.removeChannel.submit')}
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
