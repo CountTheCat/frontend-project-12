@@ -79,12 +79,12 @@ const LoginPage = () => {
                             id="username"
                             autoComplete="username"
                             placeholder={t('login.username')}
-                            className={`form-control ${(touched.username && errors.username) || authFailed ? 'is-invalid' : ''}`}
+                            className={`form-control ${(touched.username && errors.username) ? 'is-invalid' : ''}`}
                             innerRef={inputRef}
                           />
                         </FloatingLabel>
                         <Form.Control.Feedback type="invalid">
-                          {errors.username || (authFailed ? t('errors.auth.unauthorized') : '')}
+                          {errors.username}
                         </Form.Control.Feedback>
                       </Form.Group>
 
@@ -99,8 +99,8 @@ const LoginPage = () => {
                             className={`form-control ${(touched.password && errors.password) || authFailed ? 'is-invalid' : ''}`}
                           />
                         </FloatingLabel>
-                        <Form.Control.Feedback type="invalid">
-                          {errors.password || (authFailed ? t('errors.auth.unauthorized') : '')}
+                        <Form.Control.Feedback type="invalid" className="d-block">
+                          {authFailed ? t('errors.auth.unauthorized') : errors.password}
                         </Form.Control.Feedback>
                       </Form.Group>
 

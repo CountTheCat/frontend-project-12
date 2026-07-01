@@ -91,7 +91,7 @@ const SignupPage = () => {
                             className={`form-control ${(touched.username && errors.username) || failedRegistration ? 'is-invalid' : ''}`}
                           />
                         </FloatingLabel>
-                        <Form.Control.Feedback type="invalid">
+                        <Form.Control.Feedback type="invalid" className="d-block">
                           {errors.username || (failedRegistration ? t('signup.errors.userExists') : '')}
                         </Form.Control.Feedback>
                       </Form.Group>
@@ -107,7 +107,7 @@ const SignupPage = () => {
                             className={`form-control ${touched.password && errors.password ? 'is-invalid' : ''}`}
                           />
                         </FloatingLabel>
-                        <Form.Control.Feedback type="invalid">
+                        <Form.Control.Feedback type="invalid" className="d-block">
                           {errors.password}
                         </Form.Control.Feedback>
                       </Form.Group>
@@ -123,7 +123,7 @@ const SignupPage = () => {
                             className={`form-control ${touched.confirmPassword && errors.confirmPassword ? 'is-invalid' : ''}`}
                           />
                         </FloatingLabel>
-                        <Form.Control.Feedback type="invalid">
+                        <Form.Control.Feedback type="invalid" className="d-block">
                           {errors.confirmPassword}
                         </Form.Control.Feedback>
                       </Form.Group>

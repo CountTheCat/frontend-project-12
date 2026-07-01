@@ -14,9 +14,6 @@ start:
 	npx start-server -s ./frontend/dist
 
 dev:
-	@echo "Starting backend..."
-	npx start-server &
-	@echo "Starting frontend dev server..."
 	cd frontend && npm run dev
 
 clean:

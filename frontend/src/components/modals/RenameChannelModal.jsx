@@ -45,50 +45,48 @@ const RenameChannelModal = ({ channel, onClose }) => {
   }
 
   return (
-    <div className="modal-backdrop show">
-      <div className="modal show d-block" tabIndex="-1">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">{t('modals.renameChannel.title')}</h5>
-              <button type="button" className="btn-close" onClick={onClose}></button>
-            </div>
-            <Formik
-              initialValues={{ name: channel.name }}
-              validationSchema={validationSchema}
-              onSubmit={handleSubmit}
-            >
-              {({ isSubmitting, errors, handleSubmit }) => (
-                <Form onSubmit={handleSubmit}>
-                  <div className="modal-body">
-                    <FloatingLabel controlId="name" label={t('modals.renameChannel.name')} className="mb-3">
-                      <Field
-                        innerRef={inputRef}
-                        type="text"
-                        name="name"
-                        id="name"
-                        className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                        placeholder={t('modals.renameChannel.name')}
-                      />
-                      <ErrorMessage name="name" component="div" className="invalid-feedback" />
-                    </FloatingLabel>
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" onClick={onClose}>
-                      {t('modals.renameChannel.cancel')}
-                    </button>
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      disabled={isSubmitting || loading}
-                    >
-                      {isSubmitting || loading ? t('modals.renameChannel.submitting') : t('modals.renameChannel.submit')}
-                    </button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
+    <div className="modal show d-block bg-dark bg-opacity-50" tabIndex="-1">
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">{t('modals.renameChannel.title')}</h5>
+            <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
+          <Formik
+            initialValues={{ name: channel.name }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting, errors, handleSubmit }) => (
+              <Form onSubmit={handleSubmit}>
+                <div className="modal-body">
+                  <FloatingLabel controlId="name" label={t('modals.renameChannel.name')} className="mb-3">
+                    <Field
+                      innerRef={inputRef}
+                      type="text"
+                      name="name"
+                      id="name"
+                      className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                      placeholder={t('modals.renameChannel.name')}
+                    />
+                    <ErrorMessage name="name" component="div" className="invalid-feedback" />
+                  </FloatingLabel>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" onClick={onClose}>
+                    {t('modals.renameChannel.cancel')}
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isSubmitting || loading}
+                  >
+                    {isSubmitting || loading ? t('modals.renameChannel.submitting') : t('modals.renameChannel.submit')}
+                  </button>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
     </div>

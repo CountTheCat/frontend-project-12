@@ -43,50 +43,48 @@ const AddChannelModal = ({ onClose }) => {
   }
 
   return (
-    <div className="modal-backdrop show">
-      <div className="modal show d-block" tabIndex="-1">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title">{t('modals.addChannel.title')}</h5>
-              <button type="button" className="btn-close" onClick={onClose}></button>
-            </div>
-            <Formik
-              initialValues={{ name: '' }}
-              validationSchema={validationSchema}
-              onSubmit={handleSubmit}
-            >
-              {({ isSubmitting, errors, handleSubmit }) => (
-                <Form onSubmit={handleSubmit}>
-                  <div className="modal-body">
-                    <FloatingLabel controlId="name" label={t('modals.addChannel.name')} className="mb-3">
-                      <Field
-                        innerRef={inputRef}
-                        type="text"
-                        name="name"
-                        id="name"
-                        className={`form-control ${errors.name ? 'is-invalid' : ''}`}
-                        placeholder={t('modals.addChannel.name')}
-                      />
-                      <ErrorMessage name="name" component="div" className="invalid-feedback" />
-                    </FloatingLabel>
-                  </div>
-                  <div className="modal-footer">
-                    <button type="button" className="btn btn-secondary" onClick={onClose}>
-                      {t('modals.addChannel.cancel')}
-                    </button>
-                    <button
-                      type="submit"
-                      className="btn btn-primary"
-                      disabled={isSubmitting || loading}
-                    >
-                      {isSubmitting || loading ? t('modals.addChannel.submitting') : t('modals.addChannel.submit')}
-                    </button>
-                  </div>
-                </Form>
-              )}
-            </Formik>
+    <div className="modal show d-block bg-dark bg-opacity-50" tabIndex="-1">
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-header">
+            <h5 className="modal-title">{t('modals.addChannel.title')}</h5>
+            <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
+          <Formik
+            initialValues={{ name: '' }}
+            validationSchema={validationSchema}
+            onSubmit={handleSubmit}
+          >
+            {({ isSubmitting, errors, handleSubmit }) => (
+              <Form onSubmit={handleSubmit}>
+                <div className="modal-body">
+                  <FloatingLabel controlId="name" label={t('modals.addChannel.name')} className="mb-3">
+                    <Field
+                      innerRef={inputRef}
+                      type="text"
+                      name="name"
+                      id="name"
+                      className={`form-control ${errors.name ? 'is-invalid' : ''}`}
+                      placeholder={t('modals.addChannel.name')}
+                    />
+                    <ErrorMessage name="name" component="div" className="invalid-feedback" />
+                  </FloatingLabel>
+                </div>
+                <div className="modal-footer">
+                  <button type="button" className="btn btn-secondary" onClick={onClose}>
+                    {t('modals.addChannel.cancel')}
+                  </button>
+                  <button
+                    type="submit"
+                    className="btn btn-primary"
+                    disabled={isSubmitting || loading}
+                  >
+                    {isSubmitting || loading ? t('modals.addChannel.submitting') : t('modals.addChannel.submit')}
+                  </button>
+                </div>
+              </Form>
+            )}
+          </Formik>
         </div>
       </div>
     </div>
