@@ -64,7 +64,7 @@ const LoginPage = () => {
                           type="text"
                           name="username"
                           id="username"
-                          autoComplete="username"
+                          autoComplete="off"
                           className={`form-control ${errors.username && touched.username ? 'is-invalid' : ''}`}
                           placeholder={t('login.username')}
                           innerRef={inputRef}
@@ -79,7 +79,7 @@ const LoginPage = () => {
                           type="password"
                           name="password"
                           id="password"
-                          autoComplete="current-password"
+                          autoComplete="off"
                           className={`form-control ${authFailed || (errors.password && touched.password) ? 'is-invalid' : ''}`}
                           placeholder={t('login.password')}
                         />

@@ -70,7 +70,7 @@ const SignupPage = () => {
                           type="text"
                           name="username"
                           id="username"
-                          autoComplete="username"
+                          autoComplete="off"
                           className={`form-control ${(errors.username && touched.username) || failedRegistration ? 'is-invalid' : ''}`}
                           placeholder={t('signup.username')}
                         />
@@ -87,7 +87,7 @@ const SignupPage = () => {
                           type="password"
                           name="password"
                           id="password"
-                          autoComplete="new-password"
+                          autoComplete="off"
                           className={`form-control ${errors.password && touched.password ? 'is-invalid' : ''}`}
                           placeholder={t('signup.password')}
                         />
@@ -101,7 +101,7 @@ const SignupPage = () => {
                           type="password"
                           name="confirmPassword"
                           id="confirmPassword"
-                          autoComplete="new-password"
+                          autoComplete="off"
                           className={`form-control ${errors.confirmPassword && touched.confirmPassword ? 'is-invalid' : ''}`}
                           placeholder={t('signup.confirmPassword')}
                         />

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useTranslation } from 'react-i18next'
 import { sendMessage } from '../store/slices/messagesSlice'
@@ -11,15 +11,17 @@ const MessageForm = () => {
   const { t } = useTranslation()
   const { currentChannelId } = useSelector((state) => state.channels)
   const { username } = useSelector((state) => state.auth)
+  const inputRef = useRef(null)
+
+  useEffect(() => {
+    inputRef.current?.focus()
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     const trimmedMessage = message.trim()
-
     if (!trimmedMessage || isSending) return
-
     setIsSending(true)
-
     try {
       const filteredMessage = filterText(trimmedMessage)
       await dispatch(sendMessage({
@@ -28,6 +30,7 @@ const MessageForm = () => {
         username,
       })).unwrap()
       setMessage('')
+      inputRef.current?.focus()
     } catch (error) {
       console.error('Error sending message:', error)
     } finally {
@@ -41,6 +44,7 @@ const MessageForm = () => {
         <div className="input-group">
           <input
             type="text"
+            ref={inputRef}
             className="form-control"
             aria-label={t('chat.ariaLabel')}
             placeholder={t('chat.messagePlaceholder')}

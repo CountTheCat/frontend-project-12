@@ -22,8 +22,7 @@ const MessagesList = () => {
       const date = new Date(dateString)
       if (isNaN(date.getTime())) return ''
       return date.toLocaleTimeString()
-    }
-    catch {
+    } catch {
       return ''
     }
   }
@@ -46,7 +45,7 @@ const MessagesList = () => {
             {message.username}
             :
           </strong>
-          <span className="text-dark">{message.body}</span>
+          <span className="text-dark text-break">{message.body}</span>
           <span className="text-muted ms-auto">
             {formatTime(message.createdAt)}
           </span>
