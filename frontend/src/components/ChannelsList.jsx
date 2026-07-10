@@ -43,9 +43,9 @@ const ChannelsList = () => {
           type="button"
           className="btn btn-link p-0 text-primary"
           onClick={() => setShowAddModal(true)}
+          aria-label="+"
         >
           <BsPlusSquare size={18} />
-          <span className="visually-hidden">+</span>
         </button>
       </div>
       <Nav className="flex-column px-2 overflow-auto flex-grow-1" as="ul">
