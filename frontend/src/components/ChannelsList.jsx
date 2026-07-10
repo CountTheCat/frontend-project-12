@@ -39,14 +39,14 @@ const ChannelsList = () => {
     <div className="d-flex flex-column h-100 w-100">
       <div className="d-flex justify-content-between align-items-center px-3 py-2 border-bottom flex-shrink-0">
         <span className="fw-bold text-secondary small text-uppercase">{t('chat.channels')}</span>
-        <button
-          type="button"
-          className="btn btn-link p-0 text-primary"
+        <Button
+          variant="group-vertical"
+          className="p-0 text-primary"
           onClick={() => setShowAddModal(true)}
-          aria-label="+"
         >
           <BsPlusSquare size={18} />
-        </button>
+          <span className="visually-hidden">+</span>
+        </Button>
       </div>
       <Nav className="flex-column px-2 overflow-auto flex-grow-1" as="ul">
         {channels.map((channel) => {
