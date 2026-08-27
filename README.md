@@ -1,29 +1,104 @@
-### Hexlet tests and linter status:
-[![Actions Status](https://github.com/CountTheCat/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/CountTheCat/frontend-project-12/actions)
-# @hexlet/code
-Чат-приложение на React
+# Real-time Chat
 
-## Ссылка на render
-[https://frontend-project-12-esl2.onrender.com](https://frontend-project-12-esl2.onrender.com)
+[![Hexlet tests and linter status](https://github.com/CountTheCat/frontend-project-12/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/CountTheCat/frontend-project-12/actions)
 
+Одностраничное чат-приложение на React с регистрацией и авторизацией пользователей, каналами и обменом сообщениями в реальном времени.
+
+Проект разработан в рамках обучения на Hexlet и демонстрирует работу с React, глобальным состоянием, REST API, WebSocket-соединением, формами и клиентской маршрутизацией.
+
+## Demo
+
+[Открыть приложение на Render](https://frontend-project-12-esl2.onrender.com)
+
+## Возможности
+
+* регистрация и авторизация пользователей;
+* защищённый доступ к чату для авторизованных пользователей;
+* отправка и получение сообщений;
+* обновление сообщений и каналов в реальном времени;
+* создание новых каналов;
+* переименование каналов;
+* удаление каналов;
+* переключение между каналами;
+* валидация пользовательских форм;
+* обработка ошибок и отображение уведомлений;
+* фильтрация ненормативной лексики;
+* локализация интерфейса;
+* обработка неизвестных маршрутов.
+
+## Технологии
+
+* **JavaScript**
+* **React**
+* **Redux Toolkit / React Redux** — управление состоянием приложения
+* **Socket.IO Client** — обмен данными в реальном времени
+* **Axios** — HTTP-запросы к API
+* **React Router** — клиентская маршрутизация
+* **Formik + Yup** — работа с формами и валидация
+* **i18next / react-i18next** — локализация
+* **React Bootstrap / Bootstrap** — интерфейс и стили
+* **React Toastify** — уведомления
+* **leo-profanity** — фильтрация нежелательной лексики
+* **Rollbar** — мониторинг ошибок
+* **Vite** — сборка и запуск приложения
+* **ESLint** — статический анализ кода
+
+## Структура приложения
+
+Клиентская часть разделена на несколько основных слоёв:
+
+* `components` — переиспользуемые компоненты интерфейса;
+* `pages` — страницы приложения;
+* `store` — Redux-хранилище и управление состоянием;
+* `services` — работа с REST API и Socket.IO;
+* `locales` — локализация;
+* `utils` — вспомогательная логика.
+
+Backend для учебного проекта предоставляется пакетом `@hexlet/chat-server`.
 
 ## Локальная установка и запуск
 
 ### Требования
-- Node.js >= 16
-- npm >= 8
+
+* Node.js >= 20.19
+* npm
+* make
 
 ### Установка
-Клонируйте репозиторий и установите зависимости:
 
-# Установка зависимостей
+Клонируйте репозиторий:
+
+```bash
+git clone https://github.com/CountTheCat/frontend-project-12.git
+cd frontend-project-12
+```
+
+Установите зависимости:
+
+```bash
 make install
+```
 
-# Режим разработки
+### Запуск в режиме разработки
+
+```bash
 make dev
+```
 
-# Сборка для продакшена
+### Сборка production-версии
+
+```bash
 make build
+```
 
-# Запуск продакшен-сборки
+### Запуск production-сборки
+
+```bash
 make start
+```
+
+### Очистка установленных зависимостей и сборки
+
+```bash
+make clean
+```
